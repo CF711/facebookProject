@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "The Nose Book";
 }
 @section featured {
     <section class="featured">
@@ -18,6 +18,31 @@
         </div>
     </section>
 }
+<!--
+    Facebook tie in don't delete. This needs to be on everypage.
+-->
+<script>
+  window.fbAsyncInit = function() {
+    FB.init({
+      appId      : '457596417728680',
+      xfbml      : true,
+      version    : 'v2.2'
+    });
+  };
+
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
+</script>
+<div class="fb-like"
+     data-share="true"
+     data-width="450"
+     data-show-faces="true">
+</div>
 <h3>We suggest the following:</h3>
 <ol class="round">
     <li class="one">

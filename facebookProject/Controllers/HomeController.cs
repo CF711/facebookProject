@@ -28,5 +28,12 @@ namespace facebookProject.Controllers
 
             return View();
         }
+
+        public ActionResult FacebookLogin()
+        {
+            ViewBag.Message = "Login with Facebook.";
+
+            return View();
+        }
     }
 }
