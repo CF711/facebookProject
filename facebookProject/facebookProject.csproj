@@ -317,9 +317,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Calendar\Index.cshtml">
+    <Content Include="Views\Calendar\Week.cshtml">
       <BrowseToURL>~/Calendar/Index</BrowseToURL>
     </Content>
+    <Content Include="Views\Calendar\Month.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
