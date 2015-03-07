@@ -2,31 +2,29 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>@ViewBag.Title - My ASP.NET MVC Application</title>
+        <title>@ViewBag.Title - A place where you can pick your friends</title>
         <link href="~/Images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
         <meta name="viewport" content="width=device-width" />
         @Styles.Render("~/Content/css")
+        @Styles.Render("~/Content/less")
         @Scripts.Render("~/bundles/modernizr")
     </head>
     <body>
         <header>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p class="site-title">@Html.ActionLink("your logo here", "Index", "Home")</p>
+            <nav class="navbar navbar-default navbar-fixed-top" role="banner">
+                <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a href='@Url.Action("Index", "Home")' class="navbar-brand">
+                            <img src='@Url.Content("https://pbs.twimg.com/profile_images/2029688967/Betty_Photo.jpg")' />
+                            The Nose Book
+                        </a>
+                    </div>
+                    @Html.Partial("_LoginPartial")
                 </div>
-                <div class="float-right">
-                    <section id="login">
-                        @Html.Partial("_LoginPartial")
-                    </section>
-                    <nav>
-                        <ul id="menu">
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
+            </nav>
         </header>
         <div id="body">
             @RenderSection("featured", required: false)
@@ -35,9 +33,14 @@
             </section>
         </div>
         <footer>
-            <div class="content-wrapper">
-                <div class="float-left">
-                    <p>&copy; @DateTime.Now.Year - My ASP.NET MVC Application</p>
+            <div class="navbar navbar-default navbar-fixed-bottom" >
+                <div class="container-fluid">
+                    <p class="navbar-text">&copy; @DateTime.Now.Year - The Nose Book</p>
+                    <div class="fb-like navbar-text navbar-right"
+                         data-share="true"
+                         data-width="450"
+                         data-show-faces="true">
+                    </div>
                 </div>
             </div>
         </footer>
