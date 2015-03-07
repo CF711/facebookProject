@@ -707,7 +707,6 @@
     <Content Include="wdCalendar\php\functions.php" />
     <Content Include="wdCalendar\readme" />
     <Content Include="wdCalendar\sample.php" />
-    <Content Include="Views\Home\FacebookLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
