@@ -39,6 +39,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DayPilot.Web.Mvc, Version=1.4.410.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\DayPilot.Web.Mvc.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.7.0.3-alpha\lib\net45\Facebook.dll</HintPath>
     </Reference>
@@ -97,6 +102,7 @@
     <Reference Include="System.Web.Mvc, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.Mvc.4.0.30506.0\lib\net40\System.Web.Mvc.dll</HintPath>
+      <EmbedInteropTypes>False</EmbedInteropTypes>
     </Reference>
     <Reference Include="System.Web.Optimization">
       <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.0.0\lib\net40\System.Web.Optimization.dll</HintPath>
@@ -185,6 +191,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\CalendarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -257,6 +264,9 @@
     <Content Include="Scripts\custom\apiFacades\StockAPI.js" />
     <Content Include="Scripts\custom\modelComponents\virtualTrading\StockTransactionModel.js" />
     <Content Include="Scripts\custom\viewComponents\virtualTrading\StockTransactionView.js" />
+    <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
+    <Content Include="Scripts\DayPilot\DayPilot.Web.Mvc.dll" />
+    <Content Include="Scripts\jquery-1.8.1.min.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -271,159 +281,6 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="wdCalendar\css\alert.css" />
-    <Content Include="wdCalendar\css\calendar.css" />
-    <Content Include="wdCalendar\css\colorselect.css" />
-    <Content Include="wdCalendar\css\dailog.css" />
-    <Content Include="wdCalendar\css\dp.css" />
-    <Content Include="wdCalendar\css\dropdown.css" />
-    <Content Include="wdCalendar\css\Error.css" />
-    <Content Include="wdCalendar\css\images\alert\bot.gif" />
-    <Content Include="wdCalendar\css\images\alert\close.gif" />
-    <Content Include="wdCalendar\css\images\alert\corners.gif" />
-    <Content Include="wdCalendar\css\images\alert\cornersBlue.gif" />
-    <Content Include="wdCalendar\css\images\alert\help.gif" />
-    <Content Include="wdCalendar\css\images\alert\important.gif" />
-    <Content Include="wdCalendar\css\images\alert\info.gif" />
-    <Content Include="wdCalendar\css\images\alert\title.gif" />
-    <Content Include="wdCalendar\css\images\alert\title1.gif" />
-    <Content Include="wdCalendar\css\images\bgs\CardHeadbg.jpg" />
-    <Content Include="wdCalendar\css\images\bgs\CardHeadbg.png" />
-    <Content Include="wdCalendar\css\images\bgs\ch.gif" />
-    <Content Include="wdCalendar\css\images\bgs\headbg.gif" />
-    <Content Include="wdCalendar\css\images\bgs\minus1.gif" />
-    <Content Include="wdCalendar\css\images\bgs\plus1.gif" />
-    <Content Include="wdCalendar\css\images\calendar\bubble_combined.png" />
-    <Content Include="wdCalendar\css\images\calendar\combined.gif" />
-    <Content Include="wdCalendar\css\images\calendar\grid.png" />
-    <Content Include="wdCalendar\css\images\calendar\gridth.gif" />
-    <Content Include="wdCalendar\css\images\calendar\headbg.gif" />
-    <Content Include="wdCalendar\css\images\calendar\indicator_web20_working.gif" />
-    <Content Include="wdCalendar\css\images\calendar\load-bg.png" />
-    <Content Include="wdCalendar\css\images\calendar\tbg.gif" />
-    <Content Include="wdCalendar\css\images\dailog\app-form.png" />
-    <Content Include="wdCalendar\css\images\dailog\headbg.gif" />
-    <Content Include="wdCalendar\css\images\dailog\left-corners.png" />
-    <Content Include="wdCalendar\css\images\dailog\left-right.png" />
-    <Content Include="wdCalendar\css\images\dailog\right-corners.png" />
-    <Content Include="wdCalendar\css\images\dailog\tool-sprites.gif" />
-    <Content Include="wdCalendar\css\images\dailog\top-bottom.png" />
-    <Content Include="wdCalendar\css\images\dp\btn-arrow-light.gif" />
-    <Content Include="wdCalendar\css\images\dp\btn-arrow.gif" />
-    <Content Include="wdCalendar\css\images\dropdown\dropdown.gif" />
-    <Content Include="wdCalendar\css\images\dropdown\dropdownhover.gif" />
-    <Content Include="wdCalendar\css\images\home\logo.gif" />
-    <Content Include="wdCalendar\css\images\home\toolbarbg.jpg" />
-    <Content Include="wdCalendar\css\images\home\top_bg.jpg" />
-    <Content Include="wdCalendar\css\images\icons\add.png" />
-    <Content Include="wdCalendar\css\images\icons\appt.gif" />
-    <Content Include="wdCalendar\css\images\icons\au.gif" />
-    <Content Include="wdCalendar\css\images\icons\Btn.Close.gif" />
-    <Content Include="wdCalendar\css\images\icons\cacheClear.png" />
-    <Content Include="wdCalendar\css\images\icons\cal-day.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal-month.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal-proc.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal-rsc-perm.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal-week.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal-wk-week.gif" />
-    <Content Include="wdCalendar\css\images\icons\cal.gif" />
-    <Content Include="wdCalendar\css\images\icons\calendar.gif" />
-    <Content Include="wdCalendar\css\images\icons\calwrkwk.gif" />
-    <Content Include="wdCalendar\css\images\icons\canmtg.gif" />
-    <Content Include="wdCalendar\css\images\icons\circle_animation.gif" />
-    <Content Include="wdCalendar\css\images\icons\clndr.gif" />
-    <Content Include="wdCalendar\css\images\icons\clndrsmll.gif" />
-    <Content Include="wdCalendar\css\images\icons\cn.gif" />
-    <Content Include="wdCalendar\css\images\icons\date.png" />
-    <Content Include="wdCalendar\css\images\icons\date_add.png" />
-    <Content Include="wdCalendar\css\images\icons\date_reflash.png" />
-    <Content Include="wdCalendar\css\images\icons\delete.png" />
-    <Content Include="wdCalendar\css\images\icons\edit.png" />
-    <Content Include="wdCalendar\css\images\icons\folder_user.gif" />
-    <Content Include="wdCalendar\css\images\icons\group.gif" />
-    <Content Include="wdCalendar\css\images\icons\group_add.gif" />
-    <Content Include="wdCalendar\css\images\icons\hk.png" />
-    <Content Include="wdCalendar\css\images\icons\ico1.gif" />
-    <Content Include="wdCalendar\css\images\icons\indicator.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Add.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Delete.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Edit.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Input.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Save.gif" />
-    <Content Include="wdCalendar\css\images\icons\Item.Search.gif" />
-    <Content Include="wdCalendar\css\images\icons\msg_center.gif" />
-    <Content Include="wdCalendar\css\images\icons\msg_email.gif" />
-    <Content Include="wdCalendar\css\images\icons\msg_im.gif" />
-    <Content Include="wdCalendar\css\images\icons\msg_mobile.gif" />
-    <Content Include="wdCalendar\css\images\icons\mtgreq-cancel.gif" />
-    <Content Include="wdCalendar\css\images\icons\mtgreq.gif" />
-    <Content Include="wdCalendar\css\images\icons\mtgrsp-accept.gif" />
-    <Content Include="wdCalendar\css\images\icons\mtgrsp-decline.gif" />
-    <Content Include="wdCalendar\css\images\icons\mtgrsp-tent.gif" />
-    <Content Include="wdCalendar\css\images\icons\pgrs-sm.gif" />
-    <Content Include="wdCalendar\css\images\icons\resultset_next.png" />
-    <Content Include="wdCalendar\css\images\icons\resultset_previous.png" />
-    <Content Include="wdCalendar\css\images\icons\rowdelete.png" />
-    <Content Include="wdCalendar\css\images\icons\table.gif" />
-    <Content Include="wdCalendar\css\images\icons\table_c.gif" />
-    <Content Include="wdCalendar\css\images\icons\table_copy.png" />
-    <Content Include="wdCalendar\css\images\icons\table_r.png" />
-    <Content Include="wdCalendar\css\images\icons\table_refresh.png" />
-    <Content Include="wdCalendar\css\images\icons\tick.png" />
-    <Content Include="wdCalendar\css\images\icons\turnback.png" />
-    <Content Include="wdCalendar\css\images\icons\us.gif" />
-    <Content Include="wdCalendar\css\images\icons\view.png" />
-    <Content Include="wdCalendar\css\images\share\card.gif" />
-    <Content Include="wdCalendar\css\images\share\glass-bg.gif" />
-    <Content Include="wdCalendar\css\images\share\hd-sprite.gif" />
-    <Content Include="wdCalendar\css\images\share\headbg.gif" />
-    <Content Include="wdCalendar\css\images\share\information.png" />
-    <Content Include="wdCalendar\css\images\share\left-btn.gif" />
-    <Content Include="wdCalendar\css\images\share\right-btn.gif" />
-    <Content Include="wdCalendar\css\images\share\table.gif" />
-    <Content Include="wdCalendar\css\images\share\table_c.gif" />
-    <Content Include="wdCalendar\css\images\share\tbg.gif" />
-    <Content Include="wdCalendar\css\images\share\tool-sprites.gif" />
-    <Content Include="wdCalendar\css\images\validation\accept.png" />
-    <Content Include="wdCalendar\css\images\validation\exclamation.png" />
-    <Content Include="wdCalendar\css\images\validation\tooltop.gif" />
-    <Content Include="wdCalendar\css\images\validation\warning.gif" />
-    <Content Include="wdCalendar\css\main.css" />
-    <Content Include="wdCalendar\docs\css\dbx-key.js" />
-    <Content Include="wdCalendar\docs\css\dbx.css" />
-    <Content Include="wdCalendar\docs\css\dbx.js" />
-    <Content Include="wdCalendar\docs\css\geshi.css" />
-    <Content Include="wdCalendar\docs\css\home-icon-trans.png" />
-    <Content Include="wdCalendar\docs\css\iblog2.png" />
-    <Content Include="wdCalendar\docs\css\navgrad-active.png" />
-    <Content Include="wdCalendar\docs\css\navgrad-down.png" />
-    <Content Include="wdCalendar\docs\css\navgrad-hover.png" />
-    <Content Include="wdCalendar\docs\css\print.css" />
-    <Content Include="wdCalendar\docs\css\shared.css" />
-    <Content Include="wdCalendar\docs\css\style.css" />
-    <Content Include="wdCalendar\docs\css\treedata.js" />
-    <Content Include="wdCalendar\docs\index.htm" />
-    <Content Include="wdCalendar\lgpl.html" />
-    <Content Include="wdCalendar\sample-css\cal.gif" />
-    <Content Include="wdCalendar\sample-css\page.css" />
-    <Content Include="wdCalendar\setup.sql" />
-    <Content Include="wdCalendar\src\jquery.js" />
-    <Content Include="wdCalendar\src\jquery.min.js" />
-    <Content Include="wdCalendar\src\Plugins\Common.js" />
-    <Content Include="wdCalendar\src\Plugins\datepicker_lang_AU.js" />
-    <Content Include="wdCalendar\src\Plugins\datepicker_lang_HK.js" />
-    <Content Include="wdCalendar\src\Plugins\datepicker_lang_US.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.alert.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.calendar.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.colorselect.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.datepicker.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.dropdown.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.form.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.ifrmdailog.js" />
-    <Content Include="wdCalendar\src\Plugins\jquery.validate.js" />
-    <Content Include="wdCalendar\src\Plugins\wdCalendar_lang_AU.js" />
-    <Content Include="wdCalendar\src\Plugins\wdCalendar_lang_HK.js" />
-    <Content Include="wdCalendar\src\Plugins\wdCalendar_lang_US.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -708,6 +565,11 @@
     <Content Include="wdCalendar\php\functions.php" />
     <Content Include="wdCalendar\readme" />
     <Content Include="wdCalendar\sample.php" />
+    <Content Include="Views\Calendar\Week.cshtml">
+      <BrowseToURL>~/Calendar/Index</BrowseToURL>
+    </Content>
+    <Content Include="Views\Calendar\Month.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

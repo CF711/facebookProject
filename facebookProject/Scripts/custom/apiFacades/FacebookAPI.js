@@ -7,6 +7,7 @@
       // Full docs on the response object can be found in the documentation
       // for FB.getLoginStatus().
       if (response.status === 'connected') {
+          addStatus();
           getMe();
           publishToFacebook();
           console.log(response.authResponse.accessToken);
@@ -21,6 +22,7 @@
           // they are logged into this app or not.
           FB.login(function (response) {
               console.log(response.authResponse.accessToken);
+              addStatus();
           }, {scope:'public_profile,email,user_friends,publish_actions,user_events,user_photos,user_status,user_videos,read_stream'});
       }
   }
@@ -87,8 +89,7 @@
             })
         }
 
-        function publishToFacebook() {
-            var body = 'Reading JS SDK documentation';
+        function publishToFacebook(body) {
             FB.api('/me/feed', 'post', { message: body }, function (response) {
                 if (!response || response.error) {
                     alert('Error occured');
@@ -96,6 +97,33 @@
                     alert('Post ID: ' + response.id);
                 }
             });
+        }
+
+        function addStatus() {
+            var t = document.createElement("label");
+
+            t.setAttribute('value', "Test");
+
+            var f = document.createElement("form");
+         //   f.setAttribute('method',"post");
+         //   f.setAttribute('action',"submit.php");
+
+            var i = document.createElement("input"); //input element, text
+            i.setAttribute('type',"text");
+            i.setAttribute('name',"username");
+
+            var s = document.createElement("input"); //input element, Submit button
+            s.setAttribute('type',"submit");
+            s.setAttribute('value',"Publish");
+
+            f.appendChild(t);
+            f.appendChild(i);
+            f.appendChild(s);
+
+            //and some more input elements here
+            //and dont forget to add a submit button
+
+            document.getElementById("facebook").appendChild(f);
         }
 
         
