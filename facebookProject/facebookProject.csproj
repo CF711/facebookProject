@@ -264,6 +264,7 @@
     <Content Include="Scripts\custom\modelComponents\virtualTrading\StockTransactionModel.js" />
     <Content Include="Scripts\custom\viewComponents\virtualTrading\StockTransactionView.js" />
     <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
+    <Content Include="Scripts\DayPilot\DayPilot.Web.Mvc.dll" />
     <Content Include="Scripts\jquery-1.8.1.min.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
@@ -321,6 +322,7 @@
       <BrowseToURL>~/Calendar/Index</BrowseToURL>
     </Content>
     <Content Include="Views\Calendar\Month.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
