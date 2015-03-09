@@ -38,6 +38,8 @@ namespace facebookProject
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
                         "~/Content/themes/base/jquery.ui.theme.css"));
+
+            bundles.Add(new ScriptBundle("~/bundles/custom").IncludeDirectory("~/Scripts/custom", "*.js", true).IncludeDirectory("~/Scripts/custom", "*.jsx", true));
         }
     }
 }
