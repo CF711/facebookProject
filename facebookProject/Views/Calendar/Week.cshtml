@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "NoseBook Calendar";
+}
+
+<h2>MVC 4 Razor Event Calendar</h2>
+
+<script src="@Url.Content("~/Scripts/DayPilot/daypilot-all.min.js")" type="text/javascript" hidden></script>
+
+@Html.DayPilotCalendar("dpc", new DayPilotCalendarConfig
+{
+    BackendUrl = Url.Content("~/Calendar/Backend"),
+    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+    EventMoveHandling = DayPilot.Web.Mvc.Events.Calendar.EventMoveHandlingType.CallBack,
+    EventResizeHandling = DayPilot.Web.Mvc.Events.Calendar.EventResizeHandlingType.CallBack,
+    TimeRangeSelectedHandling = DayPilot.Web.Mvc.Events.Calendar.TimeRangeSelectedHandlingType.JavaScript,
+    TimeRangeSelectedJavaScript = "dpc.timeRangeSelectedCallBack(start, end, null, { name: prompt('New Event Name:', 'New Event') });"
+})

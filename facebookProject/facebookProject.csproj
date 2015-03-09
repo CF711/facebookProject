@@ -321,6 +321,7 @@
       <BrowseToURL>~/Calendar/Index</BrowseToURL>
     </Content>
     <Content Include="Views\Calendar\Month.cshtml" />
+    <Content Include="Views\Calendar\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
