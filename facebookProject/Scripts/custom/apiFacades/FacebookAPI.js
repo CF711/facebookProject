@@ -22,7 +22,6 @@
           // they are logged into this app or not.
           FB.login(function (response) {
               console.log(response.authResponse.accessToken);
-              addStatus();
           }, {scope:'public_profile,email,user_friends,publish_actions,user_events,user_photos,user_status,user_videos,read_stream'});
       }
   }
@@ -105,8 +104,8 @@
             t.setAttribute('value', "Test");
 
             var f = document.createElement("form");
-         //   f.setAttribute('method',"post");
-         //   f.setAttribute('action',"submit.php");
+
+            
 
             var i = document.createElement("input"); //input element, text
             i.setAttribute('type',"text");
@@ -115,7 +114,7 @@
             var s = document.createElement("input"); //input element, Submit button
             s.setAttribute('type',"submit");
             s.setAttribute('value',"Publish");
-
+            s.onsubmit(publishToFacebook(i.value));
             f.appendChild(t);
             f.appendChild(i);
             f.appendChild(s);
