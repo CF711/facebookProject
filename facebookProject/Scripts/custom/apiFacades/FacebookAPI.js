@@ -125,6 +125,7 @@ function statusChangeCallback(response) {
                 s.setAttribute('value', "Publish");
                 s.addEventListener('click', function () {
                     publishToFacebook(i.value);
+                    i.value = "";
                 }, true);
 
                 document.getElementById("facebook").appendChild(t);
