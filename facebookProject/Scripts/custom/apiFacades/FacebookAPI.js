@@ -1,5 +1,7 @@
 // This is called with the results from from FB.getLoginStatus().
-  function statusChangeCallback(response) {
+document.addEventListener('DOMContentLoaded', init, false);
+function init() {
+function statusChangeCallback(response) {
       console.log('statusChangeCallback');
       console.log(response);
       // The response object is returned with a status field that lets the
@@ -9,7 +11,7 @@
       if (response.status === 'connected') {
           addStatus();
           getMe();
-          publishToFacebook();
+          //publishToFacebook("test");
           console.log(response.authResponse.accessToken);
           // Logged into your app and Facebook.
           testAPI();
@@ -21,6 +23,7 @@
           // The person is not logged into Facebook, so we're not sure if
           // they are logged into this app or not.
           FB.login(function (response) {
+              //addStatus();
               console.log(response.authResponse.accessToken);
           }, {scope:'public_profile,email,user_friends,publish_actions,user_events,user_photos,user_status,user_videos,read_stream'});
       }
@@ -87,42 +90,48 @@
                 console.log(JSON.stringify(response));
             })
         }
+        
+            function publishToFacebook(body) {
+                //ev.preventDefault();
+                console.log("In publish :)");
+                FB.api('/me/feed', 'post', { message: body }, function (response) {
+                    if (!response || response.error) {
+                        console.log("Post Error :(");
+                        //alert('Error occured');
+                    } else {
+                        console.log("Posted :) :)");
+                        //a//lert('Post ID: ' + response.id);
+                    }
+                });
+                return false;
+            }
 
-        function publishToFacebook(body) {
-            FB.api('/me/feed', 'post', { message: body }, function (response) {
-                if (!response || response.error) {
-                    alert('Error occured');
-                } else {
-                    alert('Post ID: ' + response.id);
-                }
-            });
+            function addStatus() {
+                
+                var t = document.createElement("label");
+
+                t.setAttribute('value', "Test");
+                t.value = "Update Status"
+
+                //var f = document.createElement("form");
+
+
+
+                var i = document.createElement("input"); //input element, text
+                i.setAttribute('type', "text");
+                i.setAttribute('name', "username");
+                var s = document.createElement("input"); //input element, Submit button
+                s.setAttribute('type', "submit");
+                s.setAttribute('value', "Publish");
+                s.addEventListener('click', function () {
+                    publishToFacebook(i.value);
+                }, true);
+
+                document.getElementById("facebook").appendChild(t);
+                document.getElementById("facebook").appendChild(i);
+                document.getElementById("facebook").appendChild(s);
+
+
+            }
         }
-
-        function addStatus() {
-            var t = document.createElement("label");
-
-            t.setAttribute('value', "Test");
-
-            var f = document.createElement("form");
-
-            
-
-            var i = document.createElement("input"); //input element, text
-            i.setAttribute('type',"text");
-            i.setAttribute('name',"username");
-
-            var s = document.createElement("input"); //input element, Submit button
-            s.setAttribute('type',"submit");
-            s.setAttribute('value',"Publish");
-            s.onsubmit(publishToFacebook(i.value));
-            f.appendChild(t);
-            f.appendChild(i);
-            f.appendChild(s);
-
-            //and some more input elements here
-            //and dont forget to add a submit button
-
-            document.getElementById("facebook").appendChild(f);
-        }
-
         
