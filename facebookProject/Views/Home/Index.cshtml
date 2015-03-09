@@ -2,6 +2,11 @@
     ViewBag.Title = "The Nose Book";
     ViewBag.Message = "Where you can pick your friends and your stocks.";
 }
+
+@section scripts {
+    @Scripts.Render("~/bundles/custom")
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
@@ -40,7 +45,9 @@
 <section class="container-fluid">
     <div class="col-md-4" id="left-panel">
         <div id="stock">Stocks</div>
-        <div id="calendar">Calendar</div>
+        <div id="calendar">
+            <a href="/Calendar/Index">View Calendar</a>
+        </div>
     </div>
     <div class="col-md-8" id="right-panel">
         <div id="facebook">Facebook</div>
