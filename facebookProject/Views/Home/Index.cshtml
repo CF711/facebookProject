@@ -2,6 +2,11 @@
     ViewBag.Title = "The Nose Book";
     ViewBag.Message = "Where you can pick your friends and your stocks.";
 }
+
+@section scripts {
+    @Scripts.Render("~/bundles/custom")
+}
+
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
