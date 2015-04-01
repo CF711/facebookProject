@@ -1,0 +1,17 @@
+﻿@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Events.Calendar;
+@using DayPilot.Web.Mvc.Enums.Calendar;
+
+@{
+    ViewBag.Title = "WeekView";
+}
+
+<h2>WeekView</h2>
+
+@Html.DayPilotCalendar("dp_week", new DayPilotCalendarConfig
+{
+    BackendUrl = Url.Content("~/Backend/Week"),
+    EventResizeHandling = EventResizeHandlingType.CallBack,
+    EventMoveHandling = EventMoveHandlingType.CallBack,
+    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+})

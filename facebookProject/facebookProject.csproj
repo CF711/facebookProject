@@ -42,10 +42,9 @@
     <Reference Include="ClearScript">
       <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.2.4\lib\net40\ClearScript.dll</HintPath>
     </Reference>
-    <Reference Include="DayPilot.Web.Mvc, Version=1.4.410.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DayPilot.Web.Mvc, Version=7.7.5654.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DayPilot.Web.Mvc.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>Scripts\DayPilot\DayPilot.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.7.0.3-alpha\lib\net45\Facebook.dll</HintPath>
@@ -223,7 +222,8 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\Calendar\BackEndController.cs" />
+    <Compile Include="Controllers\Calendar\CalendarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -355,11 +355,10 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="Views\Calendar\Week.cshtml">
-      <BrowseToURL>~/Calendar/Index</BrowseToURL>
-    </Content>
-    <Content Include="Views\Calendar\Month.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Calendar\WeekView.cshtml" />
+    <Content Include="Views\Calendar\DayView.cshtml" />
+    <Content Include="Views\Calendar\MonthView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,17 +1,105 @@
-﻿@{
-    ViewBag.Title = "Index";
+﻿@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Events.Calendar;
+@using DayPilot.Web.Mvc.Enums.Calendar;
+
+@{
+    ViewBag.Title = "NoseBook Calendar";
 }
 
-<h2>Index</h2>
+<!--style>
+    #toolbar {
+        margin-bottom: 10px;
+    }
 
-<table class="table-front">
-    <tr>
-        <td>
-            <a href='@Url.Content("~/Calendar/Week")'><b>Week</b></a>
-            <br />
-            <a href='@Url.Content("~/Calendar/Month")'><b>Month</b></a>
-            <br />
-            Outlook-like day/week view. Customizable columns.
-        </td>
-    </tr>
-</table>
+        #toolbar a {
+            display: inline-block;
+            height: 20px;
+            text-decoration: none;
+            padding: 5px;
+            color: #666;
+            border: 1px solid #aaa;
+            background: -webkit-gradient(linear, left top, left bottom, from(#fafafa), to(#e2e2e2));
+            background: -webkit-linear-gradient(top, #fafafa 0%, #e2e2e2);
+            background: -moz-linear-gradient(top, #fafafa 0%, #e2e2e2);
+            background: -ms-linear-gradient(top, #fafafa 0%, #e2e2e2);
+            background: -o-linear-gradient(top, #fafafa 0%, #e2e2e2);
+            background: linear-gradient(top, #fafafa 0%, #e2e2e2);
+            filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#fafafa", endColorStr="#e2e2e2");
+        }
+</style-->
+<h2>Index</h2>
+<div id="tabs" style="margin-left:150px">
+    <div id="toolbar">
+        <a href="#" id="toolbar_day" onclick="displayDayView();">Day</a>
+        <a href="#" id="toolbar_week" onclick="displayWeekView();">Week</a>
+        <a href="#" id="toolbar_month" onclick="displayMonthView();">Month</a>
+    </div>
+    <div id="day_view" hidden="hidden">
+        @Html.DayPilotCalendar("dp_day", new DayPilotCalendarConfig
+        {
+          BackendUrl = Url.Content("~/Backend/Day"),
+          ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day
+        })
+    </div>
+    <div id="week_view">
+        <!-- Pulls Week view from DayPilot libraries. Calls Day() in the BackendController.cs class-->
+        @Html.DayPilotCalendar("dp_week", new DayPilotCalendarConfig
+        {
+            BackendUrl = Url.Content("~/Backend/Week"),
+            EventResizeHandling = EventResizeHandlingType.CallBack,
+            EventMoveHandling = EventMoveHandlingType.CallBack,
+            ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week
+            
+        })
+    </div>
+    <div id="month_view" hidden="hidden">
+        <!-- Pulls Month view from DayPilot libraries. Calls Month() in the BackendController.cs class-->
+        @Html.DayPilotMonth("dp_month", new DayPilotMonthConfig
+        {
+            BackendUrl = Url.Content("~/Backend/Month")
+        })
+    </div>
+    <script>
+        function displayDayView() {
+            $("#week_view").hide();
+            $("#month_view").hide();
+            $("#day_view").show();
+        }
+
+        function displayWeekView() {
+            $("#day_view").hide();
+            $("#month_view").hide();
+            $("#week_view").show();
+        }
+
+        function displayMonthView() {
+            $("#day_view").hide();
+            $("#week_view").hide();
+            $("#month_view").show();
+        }
+    </script>
+</div>
+
+<script type="text/javascript">
+    function edit(id) {
+        var modal = new DayPilot.Modal();s
+        modal.closed = function () {
+            if (this.result == "OK") {
+                switcher.active.control.commandCallBack('refresh');
+            }
+        };
+        modal.showUrl("Event/Edit/" + id);
+    }
+
+    function create(start, end) {
+        var modal = new DayPilot.Modal();
+        modal.closed = function () {
+            if (this.result == "OK") {
+                switcher.active.control.commandCallBack('refresh');
+            }
+            switcher.active.control.clearSelection();
+        };
+        modal.showUrl("Event/Create?start=" + start + "&end=" + end);
+    }
+
+</script>

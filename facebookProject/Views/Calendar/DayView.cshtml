@@ -1,0 +1,15 @@
+﻿@using DayPilot.Web.Mvc;
+@using DayPilot.Web.Mvc.Events.Calendar;
+@using DayPilot.Web.Mvc.Enums.Calendar;s
+
+@{
+    ViewBag.Title = "DayView";
+}
+
+<h2>DayView</h2>
+
+@Html.DayPilotCalendar("dp_day", new DayPilotCalendarConfig
+{
+    BackendUrl = Url.Content("~/Backend/Day"),
+    ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day
+})
