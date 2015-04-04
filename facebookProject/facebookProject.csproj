@@ -297,6 +297,7 @@
     <Content Include="Content\Site.css" />
     <None Include="Scripts\jquery-1.8.2.intellisense.js" />
     <Content Include="Scripts\custom\apiFacades\FacebookAPI.js" />
+    <Content Include="Scripts\custom\apiFacades\Status.js" />
     <Content Include="Scripts\custom\apiFacades\StockAPI.js" />
     <Content Include="Scripts\custom\initializers\stock.js" />
     <Content Include="Scripts\custom\modelComponents\virtualTrading\StockTransactionModel.js" />
