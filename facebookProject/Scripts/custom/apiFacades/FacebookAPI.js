@@ -120,11 +120,17 @@ function init() {
     function getNewsFeed() {
         /* make the API call */
         FB.api(
-            "/me/home",
+            "/me/feed",
+            { fields: 'story,message,from,type' },
+            //{sence:""}
+            //{filter: 'other'},
+            //fields:story,message,from
+            //filter: other
             function (response) {
                 console.log(response);
                 if (response && !response.error) {
                     //var status = new Status(response.to, response.from, response.message);
+                    console.log(response);
                     for (var i = 0; i < response['data'].length; i++) {
                         var obj = response['data'][i];
                         if (obj.from != undefined) {
