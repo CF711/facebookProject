@@ -6,9 +6,21 @@
             <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
         }
     </text>
-} else {
+}
+else
+{
+    <script src="~/Scripts/custom/apiFacades/FacebookAPI.js"></script>
+
+    <!--
+      Below we include the Login Button social plugin. This button uses
+      the JavaScript SDK to present a graphical Login button that triggers
+      the FB.login() function when clicked.
+    -->
+
+    <div id="status">
+    </div>
     <ul class="nav navbar-nav navbar-right"  >
-        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
-        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" autologoutlink="true">
+        </fb:login-button>
     </ul>
 }

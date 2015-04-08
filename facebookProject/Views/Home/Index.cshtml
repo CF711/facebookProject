@@ -16,11 +16,16 @@
         </div>
     </section>
 }
+<script src="~/Scripts/custom/apiFacades/FacebookAPI.js"></script>
 <!--
     Facebook tie in don't delete. This needs to be on everypage.
 -->
 <script>
-  window.fbAsyncInit = function() {''
+    FB.getLoginStatus(function (response) {
+
+        statusChangeCallback(response);
+  });
+  window.fbAsyncInit = function() {
     FB.init({
       appId      : '457596417728680',
       xfbml      : true,
@@ -46,5 +51,6 @@
     </div>
     <div class="col-md-8" id="right-panel">
         <div id="facebook">Facebook</div>
+        <div id="newsfeed">News Feed</div>
     </div>
 </section>
