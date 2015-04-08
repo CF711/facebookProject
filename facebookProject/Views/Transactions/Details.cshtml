@@ -1,0 +1,50 @@
+﻿@model facebookProject.Models.Transaction
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Transaction</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.user_id)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.user_id)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.stock_id)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.stock_id)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.price)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.price)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.datetime)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.datetime)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.amount)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.amount)
+    </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.transaction_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
