@@ -225,12 +225,23 @@
     <Compile Include="Controllers\Calendar\BackEndController.cs" />
     <Compile Include="Controllers\Calendar\CalendarController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504052346435_InitialCreate.cs" />
+    <Compile Include="Migrations\201504052346435_InitialCreate.Designer.cs">
+      <DependentUpon>201504052346435_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201504082202395_AddedAllModels.cs" />
+    <Compile Include="Migrations\201504082202395_AddedAllModels.Designer.cs">
+      <DependentUpon>201504082202395_AddedAllModels.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\FacebookConnect.cs" />
+    <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -360,12 +371,25 @@
     <Content Include="Views\Calendar\WeekView.cshtml" />
     <Content Include="Views\Calendar\DayView.cshtml" />
     <Content Include="Views\Calendar\MonthView.cshtml" />
+    <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Transactions\Details.cshtml" />
+    <Content Include="Views\Transactions\Create.cshtml" />
+    <Content Include="Views\Transactions\Edit.cshtml" />
+    <Content Include="Views\Transactions\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201504052346435_InitialCreate.resx">
+      <DependentUpon>201504052346435_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504082202395_AddedAllModels.resx">
+      <DependentUpon>201504082202395_AddedAllModels.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
