@@ -7,12 +7,14 @@ namespace facebookProject.Migrations
     {
         public override void Up()
         {
-            AlterColumn("dbo.Events", "id", c => c.Int(nullable: false, identity: true));
+            DropColumn("dbo.Events", "id");
+            AddColumn("dbo.Events", "id", c => c.Int(nullable: false, identity: true));
         }
         
         public override void Down()
         {
-            AlterColumn("dbo.Events", "id", c => c.Int(nullable: false));
+            DropColumn("dbo.Events", "id");
+            AddColumn("dbo.Events", "id", c => c.Int(nullable: false));
         }
     }
 }

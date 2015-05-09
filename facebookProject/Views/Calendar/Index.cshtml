@@ -107,17 +107,15 @@
         modal.showUrl("/Calendar/Edit/?id=" + id);
     }
 
-    function create(start, end) {
-        var modal = new DayPilot.Modal();
-        modal.closed = function () {
-            if (this.result == "OK") {
-                switcher.active.control.commandCallBack('refresh');
-            }
-            switcher.active.control.clearSelection();
-        };
-        modal.showUrl("/Calendar/Create?start=" + start + "&end=" + end);
-    }
 
-
+	function create(start, end) {
+	    var name = prompt("New Event Name:", "New Event");
+	    if (!name) { return; }
+	    dp_week.timeRangeSelectedCallBack(start, end, null, { name: name });
+	    dp_week.clearSelection();
+	}
 
 </script>
+
+
+

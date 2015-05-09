@@ -37,6 +37,11 @@ namespace facebookProject.Controllers.Calendar
             return dpc.CallBack(this);
         }
 
+        public ActionResult Create()
+        {
+            return View();
+        }
+
         class Dpc : DayPilotCalendar
         {
             public Dpc()
@@ -65,7 +70,13 @@ namespace facebookProject.Controllers.Calendar
 
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
-                new EventManager().EventCreate(e.Start, e.End, "New event");
+                //new EventManager().EventCreate(e.Start, e.End, "New event");
+                string name = (string)e.Data["name"];
+                if (String.IsNullOrEmpty(name))
+                {
+                    name = "(default)";
+                }
+                new EventManager().EventCreate(e.Start, e.End, name);
                 Update();
             }
 
