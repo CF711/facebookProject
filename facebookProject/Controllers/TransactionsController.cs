@@ -6,21 +6,62 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using facebookProject.Models;
+using Facebook;
+using System.Xml.Linq;
+using System.Net;
+using System.IO;
+using System.Collections;
 
 namespace facebookProject.Controllers
 {
     public class TransactionsController : Controller
     {
         private NosebookContext db = new NosebookContext();
-        
+        FacebookClient fb;
 
         //
+        private bool isLoggedIn()
+        {
+            if (Session["AccessToken"] != null)
+            {
+
+                var accessToken = Session["AccessToken"].ToString();
+                fb = new FacebookClient(accessToken);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         // GET: /Transactions/
         public ActionResult Index()
         {
-            return View(db.Transactions.ToList().OrderBy(p => p.datetime));
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                return View(db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime));
+            }
+            return Redirect("/Home/Index");
         }
+        public ActionResult BuySell(string searchString)
+        {
+            if (isLoggedIn())
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    Dictionary<string, string> st = getStockData(searchString);
 
+                    return View(st);
+                }
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                return View(dict);
+            }
+            else
+            {
+                return Redirect("/Home/Index");
+            }
+        }
         //
         // GET: /Transactions/Details/5
 
@@ -153,5 +194,82 @@ namespace facebookProject.Controllers
             db.Transactions.Add(tr);
             db.SaveChanges();
         }
+
+        private Dictionary<string, string> getStockData(String ticker)
+        {
+            String url = "http://dev.markitondemand.com/Api/v2/Quote/xml?symbol=";
+            url += ticker;
+            String response = RequestResponse(url);
+            XDocument doc = XDocument.Parse(response);
+            Dictionary<string, string> dataDictionary = new Dictionary<string, string>();
+
+            foreach (XElement element in doc.Descendants().Where(p => p.HasElements == false))
+            {
+                int keyInt = 0;
+                string keyName = element.Name.LocalName;
+
+                while (dataDictionary.ContainsKey(keyName))
+                {
+                    keyName = element.Name.LocalName + "_" + keyInt++;
+                }
+
+                dataDictionary.Add(keyName, element.Value);
+            }
+            //string[] attributes = new string[]{"Status", "Name",
+            //"Symbol",
+            //"LastPrice",
+            //"Change" ,
+            //"ChangePercent",
+            //"Timestamp",
+            //"MSDate",
+            //"MarketCap",
+            //"Volume",
+            //"ChangeYTD",
+            //"ChangePercentYTD",
+            //"High",
+            //"Low",
+            //"Open"};
+            //foreach ( string attribute in attributes){
+
+            //}
+            ////XmlNode retrievedData = xmlDoc.SelectSingleNode(attribute);
+            ////String data = retrievedData.InnerText;
+
+            return dataDictionary;
+        }
+        private string RequestResponse(string pUrl)
+        {
+            HttpWebRequest webRequest = System.Net.WebRequest.Create(pUrl) as HttpWebRequest;
+            webRequest.Method = "GET";
+            webRequest.ServicePoint.Expect100Continue = false;
+            webRequest.Timeout = 20000;
+
+            Stream responseStream = null;
+            StreamReader responseReader = null;
+            string responseData = "";
+            try
+            {
+                WebResponse webResponse = webRequest.GetResponse();
+                responseStream = webResponse.GetResponseStream();
+                responseReader = new StreamReader(responseStream);
+                responseData = responseReader.ReadToEnd();
+            }
+            catch (Exception exc)
+            {
+                Response.Write("<br /><br />ERROR : " + exc.Message);
+            }
+            finally
+            {
+                if (responseStream != null)
+                {
+                    responseStream.Close();
+                    responseReader.Close();
+                }
+            }
+
+            return responseData;
+        }
+
+
     }
 }

@@ -1,0 +1,44 @@
+﻿@model Dictionary<string, string>
+@{
+    ViewBag.Title = "Buy or Sell Stocks";
+}
+
+<title>
+
+</title>
+<h1>
+
+</h1>
+<h2>
+    Buy or Sell Stocks..As easy as picking your nose.
+</h2>
+@using (Html.BeginForm())
+{
+    <p>
+        Find by stock name: @Html.TextBox("SearchString")
+        <input type="submit" value="Search" />
+    </p>
+}
+<table>
+    @foreach (var key in Model.Keys)
+    {
+        <th>
+            @Html.DisplayFor(a => key);
+        </th>
+    }
+
+    
+    <tr>
+        @foreach (var key in Model.Keys)
+        {
+        <td>
+            @Html.DisplayFor(b => Model[key]);
+        </td>
+        }
+    </tr>
+    <tr>
+            Find by stock name: @Html.TextBox("StockAmount");
+            <input type="submit" value="Buy" />
+    </tr>
+    
+</table>

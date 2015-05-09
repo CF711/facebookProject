@@ -7,33 +7,29 @@
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Buy or Sell Stock", "BuySell")
 </p>
 <table>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.user_id)
+            Stock Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.stock_id)
+            Purchase Price
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.price)
+            Date Purchased
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.datetime)
+            Quantity Purchased
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.amount)
+            Current Price
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.user_id)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.stock_id)
         </td>
