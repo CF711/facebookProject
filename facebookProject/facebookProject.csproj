@@ -225,6 +225,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\Calendar\BackEndController.cs" />
     <Compile Include="Controllers\Calendar\CalendarController.cs" />
+    <Compile Include="Controllers\Calendar\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -251,8 +252,13 @@
     <Compile Include="Migrations\201505091005538_Added_buy_to_transaction.Designer.cs">
       <DependentUpon>201505091005538_Added_buy_to_transaction.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505091456030_Added primary key generation for Event.cs" />
+    <Compile Include="Migrations\201505091456030_Added primary key generation for Event.Designer.cs">
+      <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\EventManager.cs" />
     <Compile Include="Models\FacebookConnect.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -392,6 +398,8 @@
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Delete.cshtml" />
     <Content Include="Views\Transactions\BuySell.cshtml" />
+    <Content Include="Views\Calendar\Create.cshtml" />
+    <Content Include="Views\Calendar\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -414,6 +422,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505091005538_Added_buy_to_transaction.resx">
       <DependentUpon>201505091005538_Added_buy_to_transaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505091456030_Added primary key generation for Event.resx">
+      <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

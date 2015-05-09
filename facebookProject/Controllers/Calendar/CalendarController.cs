@@ -17,23 +17,15 @@ namespace NoseBook.Controllers
             return View();
         }
 
-        public void displayDayView()
+        public ActionResult Create()
         {
-            Console.WriteLine("Called displayDayView");
+            return View();
         }
 
-        public void displayWeekView()
+        public ActionResult Edit()
         {
-
-            Console.WriteLine("Called displayWeekView");
+            return View();
         }
-
-        public void displayMonthView()
-        {
-
-            Console.WriteLine("Called displayMonthView");
-        }
-
 
     }
 }

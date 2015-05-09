@@ -37,8 +37,14 @@
     <div id="day_view" hidden="hidden">
         @Html.DayPilotCalendar("dp_day", new DayPilotCalendarConfig
         {
-          BackendUrl = Url.Content("~/Backend/Day"),
-          ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day
+            BackendUrl = Url.Content("~/Backend/Day"),
+            ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day,
+            EventClickHandling = EventClickHandlingType.JavaScript,
+            EventClickJavaScript = "edit(e.id())",
+            TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+            TimeRangeSelectedJavaScript = "create(start, end)",
+            EventResizeHandling = EventResizeHandlingType.CallBack,
+            EventMoveHandling = EventMoveHandlingType.CallBack
         })
     </div>
     <div id="week_view">
@@ -48,15 +54,25 @@
             BackendUrl = Url.Content("~/Backend/Week"),
             EventResizeHandling = EventResizeHandlingType.CallBack,
             EventMoveHandling = EventMoveHandlingType.CallBack,
-            ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week
-            
+            ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Week,
+            EventClickHandling = EventClickHandlingType.JavaScript,
+            EventClickJavaScript = "edit(e.id())",
+            TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
+            TimeRangeSelectedJavaScript = "create(start, end)",
+
         })
     </div>
     <div id="month_view" hidden="hidden">
         <!-- Pulls Month view from DayPilot libraries. Calls Month() in the BackendController.cs class-->
         @Html.DayPilotMonth("dp_month", new DayPilotMonthConfig
         {
-            BackendUrl = Url.Content("~/Backend/Month")
+            BackendUrl = Url.Content("~/Backend/Month"),
+            EventClickHandling = DayPilot.Web.Mvc.Events.Month.EventClickHandlingType.JavaScript,
+            EventClickJavaScript = "edit(e.id())",
+            TimeRangeSelectedHandling = DayPilot.Web.Mvc.Events.Month.TimeRangeSelectedHandlingType.JavaScript,
+            TimeRangeSelectedJavaScript = "create(start, end)",
+            EventResizeHandling = DayPilot.Web.Mvc.Events.Month.EventResizeHandlingType.CallBack,
+            EventMoveHandling = DayPilot.Web.Mvc.Events.Month.EventMoveHandlingType.CallBack
         })
     </div>
     <script>
@@ -82,13 +98,13 @@
 
 <script type="text/javascript">
     function edit(id) {
-        var modal = new DayPilot.Modal();s
+        var modal = new DayPilot.Modal(); 
         modal.closed = function () {
             if (this.result == "OK") {
                 switcher.active.control.commandCallBack('refresh');
             }
         };
-        modal.showUrl("Event/Edit/" + id);
+        modal.showUrl("/Calendar/Edit/?id=" + id);
     }
 
     function create(start, end) {
@@ -99,7 +115,9 @@
             }
             switcher.active.control.clearSelection();
         };
-        modal.showUrl("Event/Create?start=" + start + "&end=" + end);
+        modal.showUrl("/Calendar/Create?start=" + start + "&end=" + end);
     }
+
+
 
 </script>

@@ -39,7 +39,7 @@ namespace facebookProject.Models
     public class Event
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
         public string name { get; set; }
         public DateTime eventstart { get; set; }
