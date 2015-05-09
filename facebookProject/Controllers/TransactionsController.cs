@@ -46,6 +46,7 @@ namespace facebookProject.Controllers
         }
         public ActionResult BuySell(string searchString)
         {
+
             if (isLoggedIn())
             {
                 if (!String.IsNullOrEmpty(searchString))
@@ -64,7 +65,24 @@ namespace facebookProject.Controllers
         }
         //
         // GET: /Transactions/Details/5
-
+        
+        public void BuyStock( string stockAmount, string symbol, string price)
+        {
+            if (isLoggedIn())
+            {
+                if (!String.IsNullOrEmpty(stockAmount))
+                {
+                    dynamic user = fb.Get("me");
+                    string user_id = user.id;
+                    string stock_id = symbol;
+                    decimal priceDec = Decimal.Parse(price);
+                    int amount = Convert.ToInt32(stockAmount);
+                    createTransaction(user_id, stock_id,
+                    priceDec, amount, true);
+                    Response.Redirect("Index");
+                }
+            }
+        }
         public ActionResult Details(int id = 0)
         {
             Transaction transaction = db.Transactions.Find(id);
@@ -182,7 +200,7 @@ namespace facebookProject.Controllers
             return success;
         }
         public void createTransaction(string user_id, string stock_id,
-            decimal price, int amount)
+            decimal price, int amount, bool buy)
         {
             DateTime datetime = DateTime.Now;
             Transaction tr = new Transaction();
@@ -191,6 +209,7 @@ namespace facebookProject.Controllers
             tr.price = price;
             tr.amount = amount;
             tr.datetime = datetime;
+            tr.buy = buy;
             db.Transactions.Add(tr);
             db.SaveChanges();
         }

@@ -19,6 +19,7 @@
         <input type="submit" value="Search" />
     </p>
 }
+
 <table>
     @foreach (var key in Model.Keys)
     {
@@ -32,13 +33,31 @@
         @foreach (var key in Model.Keys)
         {
         <td>
+            <div id=@key>
             @Html.DisplayFor(b => Model[key]);
+            </div>
         </td>
         }
     </tr>
     <tr>
-            Find by stock name: @Html.TextBox("StockAmount");
-            <input type="submit" value="Buy" />
+ @using (Html.BeginForm("BuyStock","Transactions",FormMethod.Post))
+{
+    <p>
+        Enter amount of stock @Html.TextBox("StockAmount");
+        @if (Model.Count != 0) {
+            try
+            {
+                @Html.Hidden("symbol", @Model["Symbol"]);
+                @Html.Hidden("price", @Model["LastPrice"]);
+            }
+            catch (Exception e)
+            {
+                
+            } 
+        }
+        <input type="submit" value="Buy" />
+    </p>
+ }
     </tr>
     
 </table>
