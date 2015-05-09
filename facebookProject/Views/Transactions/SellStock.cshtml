@@ -1,0 +1,75 @@
+﻿@using facebookProject.Models
+@model IEnumerable<Transaction>
+@{
+    ViewBag.Title = "SellStock";
+}
+<h2>
+    Choose a stock to sell
+</h2>
+
+<div id="summary">
+    <p>
+        You own
+        @Html.Action("getNumberOwned", "Transactions", new { stocksymbol = Model.First().stock_id });
+        of @Html.Action("getStockName", "Transactions", new { stocksymbol = Model.First().stock_id })'s
+        stocks.
+        Current profit is: @Html.Action("getProfit", "Transactions", new { stocksymbol = Model.First().stock_id });
+
+    </p>
+</div>
+<div id="sellStockTable">
+    <table>
+        <tr>
+            <th>
+                Stock ID
+            </th>
+            <th>
+                Stock Name
+            </th>
+            <th>
+                Purchase Price
+            </th>
+            <th>
+                Quantity Owned
+            </th>
+            <th>
+                Current Price
+            </th>
+            <th>
+                Action
+            </th>
+        </tr>
+@foreach (var x in Model) { 
+        <tr>
+            <td>
+                @Html.DisplayFor(item => x.stock_id)
+            </td>
+            <td>
+                @Html.Action("getStockName", "Transactions", new { stock_id = x.stock_id });
+
+            </td>
+            <td>
+                @Html.DisplayFor(item => x.price)
+            </td>
+            <td>
+                @Html.DisplayFor(item => x.amount)
+            </td>
+            <td>
+                @Html.Action("getStockPrice", "Transactions", new { stock_id = x.stock_id });
+
+            </td>
+            <td>
+                @(Html.BeginForm("SellStock2", "Transactions")){
+                <p>
+                    @Html.Hidden("stock_id", x.stock_id)
+                    @Html.TextBox("amount")
+                    <input type="submit" value="Sell" />
+                </p>
+                }
+            </td>
+
+        </tr>
+}
+    </table>
+</div>
+

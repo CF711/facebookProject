@@ -40,12 +40,15 @@
             @Html.DisplayFor(modelItem => item.datetime)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.amount)
+            | @Html.DisplayFor(modelItem => item.amount) |
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.transaction_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.transaction_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.transaction_id })
+            @(Html.BeginForm("SellStock","Transactions")){
+                <p>
+                @Html.Hidden("stock_id", item.stock_id)
+                <input type="submit" value="Sell" />
+                </p>
+            } 
         </td>
     </tr>
 }

@@ -401,6 +401,7 @@
     <Content Include="Views\Transactions\BuySell.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Transactions\SellStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
