@@ -143,6 +143,10 @@ function init() {
         var s = document.createElement("input"); //input element, Submit button
         s.setAttribute('type', "submit");
         s.setAttribute('value', "Publish");
+
+        var sendMessage = document.createElement("input");
+        sendMessage.setAttribute('type', "submit");
+        sendMessage.setAttribute('value', "SendMessage");
         
         s.addEventListener('click', function () {
             var pLink = pictureLink.value;
@@ -169,12 +173,15 @@ function init() {
             }
             i.value = "";
             pictureLink.value = "";
+
+        }, true);
+
+        sendMessage.addEventListener('click', function () {
             FB.ui({
                 method: 'send',
                 link: 'http://thenosebook.tk',
             });
-
-        }, true);
+        });
 
         statusDiv.appendChild(t);
         statusDiv.appendChild(span);
@@ -183,6 +190,7 @@ function init() {
         div.appendChild(statusDiv);
         div.appendChild(pictureDiv);
         div.appendChild(s);
+        div.appendChild(sendMessage);
 
         start.appendChild(div);
     }
