@@ -11,11 +11,17 @@ using Facebook;
 
 public class EventController : Controller
 {
-    FacebookClient fb;
+    FacebookClient fb = null;
 
     public EventController()
     {
-        fb = new FacebookClient(Session["AccessToken"].ToString());
+        if (Session != null)
+        {
+            if (Session["AccessToken"] != null)
+            {
+                fb = new FacebookClient(Session["AccessToken"].ToString());
+            }
+        }
     }
     public ActionResult Edit(string id)
     {

@@ -108,7 +108,6 @@ namespace facebookProject.Controllers.Calendar
 
             protected override void OnTimeRangeSelected(TimeRangeSelectedArgs e)
             {
-                //new EventManager().EventCreate(e.Start, e.End, "New event");
                 string name = (string)e.Data["name"];
                 if (String.IsNullOrEmpty(name))
                 {
@@ -119,11 +118,6 @@ namespace facebookProject.Controllers.Calendar
                 Update();
             }
             
-
-            //protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
-            //{
-            //    e.Areas.Add(new Area().Right(3).Top(3).Width(15).Height(15).CssClass("event_action_delete").JavaScript("switcher.active.control.commandCallBack('delete', {'e': e});"));
-            //}
 
             protected override void OnCommand(CommandArgs e)
             {
@@ -150,6 +144,16 @@ namespace facebookProject.Controllers.Calendar
 
                     case "next":
                         StartDate = StartDate.AddDays(7);
+                        Update(CallBackUpdateType.Full);
+                        break;
+
+                    case "day_next":
+                        StartDate = StartDate.AddDays(1);
+                        Update(CallBackUpdateType.Full);
+                        break;
+
+                    case "day_previous":
+                        StartDate = StartDate.AddDays(-1);
                         Update(CallBackUpdateType.Full);
                         break;
 
@@ -204,24 +208,7 @@ namespace facebookProject.Controllers.Calendar
                 Update();
             }
 
-            protected override void OnEventResize(DayPilot.Web.Mvc.Events.Month.EventResizeArgs e)
-            {
-                new EventManager().EventMove(e.Id, e.NewStart, e.NewEnd);
-                Update();
-            }
 
-            protected override void OnEventMove(DayPilot.Web.Mvc.Events.Month.EventMoveArgs e)
-            {
-                new EventManager().EventMove(e.Id, e.NewStart, e.NewEnd);
-                Update();
-            }
-
-            protected override void OnTimeRangeSelected(DayPilot.Web.Mvc.Events.Month.TimeRangeSelectedArgs e)
-            {
-                dynamic user = fb.Get("me");
-                new EventManager().EventCreate(e.Start, e.End, "New event", user.id);
-                Update();
-            }
 
 
             protected override void OnCommand(DayPilot.Web.Mvc.Events.Month.CommandArgs e)
@@ -242,20 +229,36 @@ namespace facebookProject.Controllers.Calendar
                 }
             }
 
-            //protected override void OnFinish()
-            //{
-            //    if (UpdateType == CallBackUpdateType.None)
-            //    {
-            //        return;
-            //    }
+            protected override void OnFinish()
+            {
+                if (UpdateType == CallBackUpdateType.None)
+                {
+                    return;
+                }
+                dynamic user = fb.Get("me");
 
-            //    Events = new EventManager().FilteredData(VisibleStart, VisibleEnd).AsEnumerable();
+                DataTable eventData = new EventManager().FilteredData(VisibleStart, VisibleEnd, user.id);
+                Events = convertEventDataTableToList(eventData);
+                DataIdField = "id";
+                DataTextField = "name";
+                DataStartField = "eventstart";
+                DataEndField = "eventend";
+            }
 
-            //    DataIdField = "id";
-            //    DataTextField = "name";
-            //    DataStartField = "eventstart";
-            //    DataEndField = "eventend";
-            //}
+            public List<Event> convertEventDataTableToList(DataTable eventData)
+            {
+                List<Event> eventList = new List<Event>();
+                foreach (DataRow row in eventData.Rows)
+                {
+                    Event newEvent = new Event();
+                    newEvent.name = row["name"].ToString();
+                    newEvent.id = int.Parse(row["event_id"].ToString());
+                    newEvent.eventstart = DateTime.Parse(row["eventstart"].ToString());
+                    newEvent.eventend = DateTime.Parse(row["eventend"].ToString());
+                    eventList.Add(newEvent);
+                }
+                return eventList;
+            }
         }
 
     }

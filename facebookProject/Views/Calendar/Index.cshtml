@@ -27,30 +27,16 @@
             filter: progid:DXImageTransform.Microsoft.Gradient(startColorStr="#fafafa", endColorStr="#e2e2e2");
         }
 </style-->
-<h2>Index</h2>
+<h2>Calendar</h2>
 <div id="tabs" style="margin-left:150px">
     <div id="toolbar">
-        <a href="#" id="toolbar_day" onclick="displayDayView();">Day</a>
         <a href="#" id="toolbar_week" onclick="displayWeekView();">Week</a>
         <a href="#" id="toolbar_month" onclick="displayMonthView();">Month</a>
     </div>
-    <div id="day_view" hidden="hidden">
-        @Html.DayPilotCalendar("dp_day", new DayPilotCalendarConfig
-        {
-            BackendUrl = Url.Content("~/Backend/Day"),
-            ViewType = DayPilot.Web.Mvc.Enums.Calendar.ViewType.Day,
-            EventClickHandling = EventClickHandlingType.JavaScript,
-            EventClickJavaScript = "edit(e.id())",
-            TimeRangeSelectedHandling = TimeRangeSelectedHandlingType.JavaScript,
-            TimeRangeSelectedJavaScript = "create(start, end)",
-            EventResizeHandling = EventResizeHandlingType.CallBack,
-            EventMoveHandling = EventMoveHandlingType.CallBack
-        })
-    </div>
     <div id="week_view">
         <div id="nav_toolbar">
-            <a href="javascript:dp_week.commandCallBack('next');">Next</a>
             <a href="javascript:dp_week.commandCallBack('previous');">Previous</a>
+            <a href="javascript:dp_week.commandCallBack('next');">Next</a>
         </div>
         <!-- Pulls Week view from DayPilot libraries. Calls Day() in the BackendController.cs class-->
         @Html.DayPilotCalendar("dp_week", new DayPilotCalendarConfig
@@ -72,19 +58,10 @@
         {
             BackendUrl = Url.Content("~/Backend/Month"),
             EventClickHandling = DayPilot.Web.Mvc.Events.Month.EventClickHandlingType.JavaScript,
-            EventClickJavaScript = "edit(e.id())",
-            TimeRangeSelectedHandling = DayPilot.Web.Mvc.Events.Month.TimeRangeSelectedHandlingType.JavaScript,
-            TimeRangeSelectedJavaScript = "create(start, end)",
-            EventResizeHandling = DayPilot.Web.Mvc.Events.Month.EventResizeHandlingType.CallBack,
-            EventMoveHandling = DayPilot.Web.Mvc.Events.Month.EventMoveHandlingType.CallBack
+            EventClickJavaScript = "edit(e.id(), e.start(), e.end())",
         })
     </div>
     <script>
-        function displayDayView() {
-            $("#week_view").hide();
-            $("#month_view").hide();
-            $("#day_view").show();
-        }
 
         function displayWeekView() {
             $("#day_view").hide();
