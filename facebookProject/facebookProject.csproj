@@ -348,7 +348,6 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Views\Calendar\layout.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -390,9 +389,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Calendar\Index.cshtml" />
-    <Content Include="Views\Calendar\WeekView.cshtml" />
-    <Content Include="Views\Calendar\DayView.cshtml" />
-    <Content Include="Views\Calendar\MonthView.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Create.cshtml" />
@@ -401,6 +397,7 @@
     <Content Include="Views\Transactions\BuySell.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Shared\_Blank.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

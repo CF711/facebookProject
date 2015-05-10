@@ -79,6 +79,7 @@ namespace facebookProject.Controllers.Calendar
                 new EventManager().EventCreate(e.Start, e.End, name);
                 Update();
             }
+            
 
             //protected override void OnBeforeEventRender(BeforeEventRenderArgs e)
             //{
@@ -93,12 +94,29 @@ namespace facebookProject.Controllers.Calendar
                         StartDate = (DateTime)e.Data["day"];
                         Update(CallBackUpdateType.Full);
                         break;
+
                     case "refresh":
                         Update(CallBackUpdateType.EventsOnly);
                         break;
+
                     case "delete":
                         new EventManager().EventDelete((string)e.Data["e"]["id"]);
                         Update(CallBackUpdateType.EventsOnly);
+                        break;
+
+                    case "previous":
+                        StartDate = StartDate.AddDays(-7);
+                        Update(CallBackUpdateType.Full);
+                        break;
+
+                    case "next":
+                        StartDate = StartDate.AddDays(7);
+                        Update(CallBackUpdateType.Full);
+                        break;
+
+                    case "today":
+                        StartDate = DateTime.Today;
+                        Update(CallBackUpdateType.Full);
                         break;
                 }
             }
