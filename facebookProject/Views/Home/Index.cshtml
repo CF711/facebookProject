@@ -6,7 +6,6 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/custom")
-    @Scripts.Render("~/")
     @Styles.Render("~/Content/Table.css")
 }
 
@@ -49,7 +48,7 @@
                     // and signed request each expire
                     var uid = response.authResponse.userID;
                     var accessToken = response.authResponse.accessToken;
-                    alert("here");
+                    //alert("here");
                     var accessToken = response.authResponse.accessToken;
                     $.post('@Url.Action("UserInfo", "Home")', { 'accessToken': accessToken });
                 } else if (response.status === 'not_authorized') {
@@ -83,7 +82,6 @@
         </div>
         @*Web Chat*@
         <div class="chat">
-            <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
             <script src="http://js.pusher.com/2.2/pusher.min.js"></script>
             <div id="wrapper">
                 
@@ -112,7 +110,7 @@
                 <ul id="messages"></ul>
             </article>*@
 
-            <script type="text/javascript">
+            <script>
                 $(function () {
                     var pusher = new Pusher('46b5305b3dc414716219');
                     var channel = pusher.subscribe('test_channel');
