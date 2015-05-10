@@ -7,9 +7,16 @@ using System.Web.Mvc;
 using DayPilot.Web.Mvc.Json;
 using facebookProject.Models;
 using facebookProject.Controllers.Calendar;
+using Facebook;
 
 public class EventController : Controller
 {
+    FacebookClient fb;
+
+    public EventController()
+    {
+        fb = new FacebookClient(Session["AccessToken"].ToString());
+    }
     public ActionResult Edit(string id)
     {
         var e = new EventManager().Get(id) ?? new Event();
@@ -52,10 +59,10 @@ public class EventController : Controller
     [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
     public ActionResult Create(FormCollection form)
     {
-
+        dynamic user = fb.Get("me");
         DateTime start = Convert.ToDateTime(form["Start"]);
         DateTime end = Convert.ToDateTime(form["End"]);
-        new EventManager().EventCreate(start, end, form["Text"]);
+        new EventManager().EventCreate(start, end, form["Text"], user.id);
         return JavaScript(SimpleJsonSerializer.Serialize("OK"));
     }
 }

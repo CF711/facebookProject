@@ -8,7 +8,6 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
 namespace facebookProject.Models
 {
     /// <summary>
@@ -23,10 +22,9 @@ namespace facebookProject.Models
         {
             db = new NosebookContext();
         }
-        public DataTable FilteredData(DateTime start, DateTime end)
+        public DataTable FilteredData(DateTime start, DateTime end, string user_id)
         {
-
-            List<Event> filteredDt = db.Events.Where(p => p.eventend <= end && p.eventstart >= start).ToList();
+            List<Event> filteredDt = db.Events.Where(p => p.eventend <= end && p.eventstart >= start && p.user_id == user_id).ToList();
             DataTable dt = new DataTable();
             ArrayList array = new ArrayList();
             if (filteredDt.Count > 0)
@@ -35,6 +33,7 @@ namespace facebookProject.Models
                 dt.Columns.Add("name");
                 dt.Columns.Add("eventstart");
                 dt.Columns.Add("eventend");
+                dt.Columns.Add("user_id");
                 // Add the data from the Event Objects to the Data table
                 foreach (Event row in filteredDt)
                 {
@@ -43,6 +42,7 @@ namespace facebookProject.Models
                     dr["name"] = row.name;
                     dr["eventstart"] = row.eventstart;
                     dr["eventend"] = row.eventend;
+                    dr["user_id"] = row.user_id;
                     dt.Rows.Add(dr);
                     dt.AcceptChanges();
                 }
@@ -77,12 +77,13 @@ namespace facebookProject.Models
             return eventToGet;
         }
 
-        public void EventCreate(DateTime start, DateTime end, string name)
+        public void EventCreate(DateTime start, DateTime end, string name, string user_id)
         {
             Event newEvent = new Event();
             newEvent.eventstart = start;
             newEvent.eventend = end;
             newEvent.name = name;
+            newEvent.user_id = user_id;
             db.Events.Add(newEvent);
             db.SaveChanges();
         }

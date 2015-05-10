@@ -48,6 +48,10 @@
         })
     </div>
     <div id="week_view">
+        <div id="nav_toolbar">
+            <a href="javascript:dp_week.commandCallBack('next');">Next</a>
+            <a href="javascript:dp_week.commandCallBack('previous');">Previous</a>
+        </div>
         <!-- Pulls Week view from DayPilot libraries. Calls Day() in the BackendController.cs class-->
         @Html.DayPilotCalendar("dp_week", new DayPilotCalendarConfig
         {

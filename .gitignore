@@ -147,6 +147,7 @@ csx/
 AppPackages/
 
 # Others
+web.config
 sql/
 *.Cache
 ClientBin/

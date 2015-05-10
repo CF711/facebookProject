@@ -256,6 +256,10 @@
     <Compile Include="Migrations\201505091456030_Added primary key generation for Event.Designer.cs">
       <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505102107019_add_user_column_to_events.cs" />
+    <Compile Include="Migrations\201505102107019_add_user_column_to_events.Designer.cs">
+      <DependentUpon>201505102107019_add_user_column_to_events.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EventManager.cs" />
@@ -425,6 +429,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505091456030_Added primary key generation for Event.resx">
       <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505102107019_add_user_column_to_events.resx">
+      <DependentUpon>201505102107019_add_user_column_to_events.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
