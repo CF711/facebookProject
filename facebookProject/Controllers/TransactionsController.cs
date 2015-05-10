@@ -83,6 +83,40 @@ namespace facebookProject.Controllers
                 }
             }
         }
+        public ActionResult SellStock(string stock_id)
+        {
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                var lst = db.Transactions.ToList().Where(t => t.user_id == user.id).
+                    Where(t => t.stock_id == stock_id).
+                    Where(t => t.buy == true);
+                
+                return View(lst);
+            }
+            return Redirect("/Home/Index");
+        }
+        public ActionResult SellStock2(string stock_id, string amount)
+        {
+            
+            if (getNumberOwned(stock_id) > 0
+                && getNumberOwned(stock_id) >= Convert.ToInt32(amount))
+            {
+                
+                Transaction tr = new Transaction();
+                tr.stock_id = stock_id;
+                tr.amount = Convert.ToInt32(amount);
+                tr.datetime = DateTime.Now;
+                tr.price = Convert.ToDecimal(getStockPrice(stock_id));
+                dynamic user = fb.Get("me");
+                tr.user_id = user.id;
+                tr.buy = false;
+                db.Transactions.Add(tr);
+                db.SaveChanges();
+                return Redirect("Index");
+            }
+            return Redirect("Index");
+        }
         public ActionResult Details(int id = 0)
         {
             Transaction transaction = db.Transactions.Find(id);
@@ -213,7 +247,6 @@ namespace facebookProject.Controllers
             db.Transactions.Add(tr);
             db.SaveChanges();
         }
-
         private Dictionary<string, string> getStockData(String ticker)
         {
             String url = "http://dev.markitondemand.com/Api/v2/Quote/xml?symbol=";
@@ -256,6 +289,16 @@ namespace facebookProject.Controllers
 
             return dataDictionary;
         }
+        public string getStockName(String stock_id)
+        {
+            var dict = getStockData(stock_id);
+            return dict["Name"];
+        }
+        public string getStockPrice(string stock_id)
+        {
+            var dict = getStockData(stock_id);
+            return dict["LastPrice"];
+        }
         private string RequestResponse(string pUrl)
         {
             HttpWebRequest webRequest = System.Net.WebRequest.Create(pUrl) as HttpWebRequest;
@@ -288,7 +331,51 @@ namespace facebookProject.Controllers
 
             return responseData;
         }
+        public int getNumberOwned( string stocksymbol)
+        {
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                string userID = user.id;
+                IEnumerable<Transaction> bought = db.Transactions.ToList().Where(t => t.user_id == userID && t.stock_id==stocksymbol && t.buy == true);
+                IEnumerable<Transaction> sold = db.Transactions.ToList().Where(t => t.user_id == userID && t.stock_id==stocksymbol && t.buy == false);
+                int boughtCount = 0;
+                int soldCount = 0;
+                foreach (Transaction t in bought)
+                {
+                    boughtCount += t.amount;
+                }
+                foreach (Transaction t in sold)
+                {
+                    soldCount += t.amount;
+                }
+                return boughtCount - soldCount;
+            }
+            return -1;
+            
+        }
+        public decimal getProfit(string stocksymbol)
+        {
+            if (isLoggedIn())
+            {
 
-
+                dynamic user = fb.Get("me");
+                string userID = user.id;
+                var bought = db.Transactions.ToList().Where(t => t.user_id == userID).Where(t => t.stock_id == stocksymbol).Where(t => t.buy == true);
+                var sold = db.Transactions.ToList().Where(t => t.user_id == userID).Where(t => t.stock_id == stocksymbol).Where(t => t.buy == false);
+                decimal spent = 0;
+                decimal gained = 0;
+                foreach (Transaction t in bought)
+                {
+                    spent += t.amount * t.price;
+                }
+                foreach (Transaction t in sold)
+                {
+                    gained += t.amount * t.price;
+                }
+                return gained - spent;
+            }
+            return -1;
+        }
     }
 }
