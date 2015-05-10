@@ -16,7 +16,8 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
-    <IISExpressSSLPort />
+    <IISExpressSSLPort>
+    </IISExpressSSLPort>
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
@@ -42,10 +43,9 @@
     <Reference Include="ClearScript">
       <HintPath>..\packages\JavaScriptEngineSwitcher.V8.1.2.4\lib\net40\ClearScript.dll</HintPath>
     </Reference>
-    <Reference Include="DayPilot.Web.Mvc, Version=1.4.410.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="DayPilot.Web.Mvc, Version=7.7.5654.1, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\DayPilot.Web.Mvc.dll</HintPath>
-      <EmbedInteropTypes>False</EmbedInteropTypes>
+      <HintPath>Scripts\DayPilot\DayPilot.Web.Mvc.dll</HintPath>
     </Reference>
     <Reference Include="Facebook">
       <HintPath>..\packages\Facebook.7.0.3-alpha\lib\net45\Facebook.dll</HintPath>
@@ -223,7 +223,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\CalendarController.cs" />
+    <Compile Include="Controllers\Calendar\BackEndController.cs" />
+    <Compile Include="Controllers\Calendar\CalendarController.cs" />
+    <Compile Include="Controllers\Calendar\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\TransactionsController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
@@ -238,8 +240,25 @@
     <Compile Include="Migrations\201504082202395_AddedAllModels.Designer.cs">
       <DependentUpon>201504082202395_AddedAllModels.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505090833317_UsersTableChanged.cs" />
+    <Compile Include="Migrations\201505090833317_UsersTableChanged.Designer.cs">
+      <DependentUpon>201505090833317_UsersTableChanged.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505090836400_UsersTableChanged1.cs" />
+    <Compile Include="Migrations\201505090836400_UsersTableChanged1.Designer.cs">
+      <DependentUpon>201505090836400_UsersTableChanged1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505091005538_Added_buy_to_transaction.cs" />
+    <Compile Include="Migrations\201505091005538_Added_buy_to_transaction.Designer.cs">
+      <DependentUpon>201505091005538_Added_buy_to_transaction.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201505091456030_Added primary key generation for Event.cs" />
+    <Compile Include="Migrations\201505091456030_Added primary key generation for Event.Designer.cs">
+      <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
+    <Compile Include="Models\EventManager.cs" />
     <Compile Include="Models\FacebookConnect.cs" />
     <Compile Include="Models\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -303,6 +322,7 @@
     <Content Include="Content\themes\base\minified\jquery.ui.slider.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.tabs.min.css" />
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
+    <Content Include="Content\Table.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -315,7 +335,6 @@
     <None Include="Scripts\custom\viewComponents\virtualTrading\StockTransactionView.jsx" />
     <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
     <Content Include="Scripts\DayPilot\DayPilot.Web.Mvc.dll" />
-    <Content Include="Scripts\jquery-1.8.1.min.js" />
     <Content Include="Scripts\jquery-1.8.2.js" />
     <Content Include="Scripts\jquery-1.8.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -330,7 +349,10 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Views\Calendar\layout.css" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -368,262 +390,19 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
-    <Content Include="wdCalendar\css\images\alert\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\alert\.svn\entries" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\bot.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\close.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\corners.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\cornersBlue.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\help.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\important.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\info.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\title.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\prop-base\title1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\bot.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\close.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\corners.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\cornersBlue.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\help.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\important.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\info.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\title.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\alert\.svn\text-base\title1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\entries" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\CardHeadbg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\CardHeadbg.png.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\ch.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\minus1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\prop-base\plus1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\CardHeadbg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\CardHeadbg.png.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\ch.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\minus1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\bgs\.svn\text-base\plus1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\entries" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\bubble_combined.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\combined.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\grid.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\gridth.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\indicator_web20_working.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\load-bg.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\prop-base\tbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\bubble_combined.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\combined.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\grid.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\gridth.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\indicator_web20_working.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\load-bg.png.svn-base" />
-    <Content Include="wdCalendar\css\images\calendar\.svn\text-base\tbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\entries" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\app-form.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\left-corners.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\left-right.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\right-corners.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\tool-sprites.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\prop-base\top-bottom.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\app-form.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\left-corners.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\left-right.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\right-corners.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\tool-sprites.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dailog\.svn\text-base\top-bottom.png.svn-base" />
-    <Content Include="wdCalendar\css\images\dp\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\dp\.svn\entries" />
-    <Content Include="wdCalendar\css\images\dp\.svn\prop-base\btn-arrow-light.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dp\.svn\prop-base\btn-arrow.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dp\.svn\text-base\btn-arrow-light.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dp\.svn\text-base\btn-arrow.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\entries" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\prop-base\dropdown.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\prop-base\dropdownhover.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\text-base\dropdown.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\dropdown\.svn\text-base\dropdownhover.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\home\.svn\entries" />
-    <Content Include="wdCalendar\css\images\home\.svn\prop-base\logo.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\prop-base\toolbarbg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\prop-base\top_bg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\text-base\logo.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\text-base\toolbarbg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\home\.svn\text-base\top_bg.jpg.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\icons\.svn\entries" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\add.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\appt.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\au.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Btn.Close.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cacheClear.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-day.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-month.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-proc.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-rsc-perm.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-week.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal-wk-week.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cal.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\calendar.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\calwrkwk.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\canmtg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\circle_animation.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\clndr.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\clndrsmll.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\cn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\date.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\date_add.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\date_reflash.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\delete.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\edit.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\folder_user.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\group.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\group_add.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\ico1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\indicator.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Add.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Delete.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Edit.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Input.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Save.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\Item.Search.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\msg_center.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\msg_email.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\msg_im.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\msg_mobile.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\mtgreq-cancel.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\mtgreq.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\mtgrsp-accept.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\mtgrsp-decline.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\mtgrsp-tent.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\pgrs-sm.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\resultset_next.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\resultset_previous.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\rowdelete.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\table.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\table_c.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\table_copy.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\table_r.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\table_refresh.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\tick.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\turnback.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\us.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\prop-base\view.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\add.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\appt.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\au.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Btn.Close.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cacheClear.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-day.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-month.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-proc.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-rsc-perm.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-week.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal-wk-week.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cal.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\calendar.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\calwrkwk.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\canmtg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\circle_animation.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\clndr.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\clndrsmll.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\cn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\date.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\date_add.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\date_reflash.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\delete.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\edit.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\folder_user.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\group.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\group_add.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\ico1.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\indicator.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Add.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Delete.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Edit.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Input.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Save.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\Item.Search.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\msg_center.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\msg_email.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\msg_im.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\msg_mobile.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\mtgreq-cancel.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\mtgreq.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\mtgrsp-accept.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\mtgrsp-decline.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\mtgrsp-tent.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\pgrs-sm.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\resultset_next.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\resultset_previous.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\rowdelete.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\table.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\table_c.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\table_copy.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\table_r.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\table_refresh.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\tick.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\turnback.png.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\us.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\icons\.svn\text-base\view.png.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\share\.svn\entries" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\card.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\glass-bg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\hd-sprite.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\information.png.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\left-btn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\right-btn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\table.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\table_c.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\tbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\prop-base\tool-sprites.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\card.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\glass-bg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\hd-sprite.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\headbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\information.png.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\left-btn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\right-btn.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\table.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\table_c.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\tbg.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\share\.svn\text-base\tool-sprites.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\all-wcprops" />
-    <Content Include="wdCalendar\css\images\validation\.svn\entries" />
-    <Content Include="wdCalendar\css\images\validation\.svn\prop-base\accept.png.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\prop-base\exclamation.png.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\prop-base\tooltop.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\prop-base\warning.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\text-base\accept.png.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\text-base\exclamation.png.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\text-base\tooltop.gif.svn-base" />
-    <Content Include="wdCalendar\css\images\validation\.svn\text-base\warning.gif.svn-base" />
-    <Content Include="wdCalendar\edit.db.php" />
-    <Content Include="wdCalendar\edit.php" />
-    <Content Include="wdCalendar\php\datafeed.db.php" />
-    <Content Include="wdCalendar\php\datafeed.php" />
-    <Content Include="wdCalendar\php\dbconfig.php" />
-    <Content Include="wdCalendar\php\functions.php" />
-    <Content Include="wdCalendar\readme" />
-    <Content Include="wdCalendar\sample.php" />
-    <Content Include="Views\Calendar\Week.cshtml">
-      <BrowseToURL>~/Calendar/Index</BrowseToURL>
-    </Content>
-    <Content Include="Views\Calendar\Month.cshtml" />
     <Content Include="Views\Calendar\Index.cshtml" />
+    <Content Include="Views\Calendar\WeekView.cshtml" />
+    <Content Include="Views\Calendar\DayView.cshtml" />
+    <Content Include="Views\Calendar\MonthView.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Create.cshtml" />
     <Content Include="Views\Transactions\Edit.cshtml" />
     <Content Include="Views\Transactions\Delete.cshtml" />
+    <Content Include="Views\Transactions\BuySell.cshtml" />
+    <Content Include="Views\Calendar\Create.cshtml" />
+    <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Transactions\SellStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -637,6 +416,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201504082202395_AddedAllModels.resx">
       <DependentUpon>201504082202395_AddedAllModels.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505090833317_UsersTableChanged.resx">
+      <DependentUpon>201505090833317_UsersTableChanged.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505090836400_UsersTableChanged1.resx">
+      <DependentUpon>201505090836400_UsersTableChanged1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505091005538_Added_buy_to_transaction.resx">
+      <DependentUpon>201505091005538_Added_buy_to_transaction.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505091456030_Added primary key generation for Event.resx">
+      <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

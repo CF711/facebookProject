@@ -1,0 +1,24 @@
+﻿table, td, th {
+    border: 1px solid black;
+}
+
+th {
+    background-color: lightblue;
+    color: black;
+}
+th {
+    padding: 15px;
+}
+td {
+    padding: 15px;
+}
+.intro { 
+font-size: 1.3em; 
+line-height: 1.8em; 
+font-style: italic; 
+text-indent: 1.3em; 
+color: gray; 
+}
+.title{
+    padding-top: 25px
+}

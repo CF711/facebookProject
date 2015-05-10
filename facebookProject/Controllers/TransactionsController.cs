@@ -6,24 +6,117 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using facebookProject.Models;
+using Facebook;
+using System.Xml.Linq;
+using System.Net;
+using System.IO;
+using System.Collections;
 
 namespace facebookProject.Controllers
 {
     public class TransactionsController : Controller
     {
         private NosebookContext db = new NosebookContext();
-        
+        FacebookClient fb;
 
         //
+        private bool isLoggedIn()
+        {
+            if (Session["AccessToken"] != null)
+            {
+
+                var accessToken = Session["AccessToken"].ToString();
+                fb = new FacebookClient(accessToken);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
         // GET: /Transactions/
         public ActionResult Index()
         {
-            return View(db.Transactions.ToList().OrderBy(p => p.datetime));
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                return View(db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime));
+            }
+            return Redirect("/Home/Index");
         }
+        public ActionResult BuySell(string searchString)
+        {
 
+            if (isLoggedIn())
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    Dictionary<string, string> st = getStockData(searchString);
+
+                    return View(st);
+                }
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                return View(dict);
+            }
+            else
+            {
+                return Redirect("/Home/Index");
+            }
+        }
         //
         // GET: /Transactions/Details/5
-
+        
+        public void BuyStock( string stockAmount, string symbol, string price)
+        {
+            if (isLoggedIn())
+            {
+                if (!String.IsNullOrEmpty(stockAmount))
+                {
+                    dynamic user = fb.Get("me");
+                    string user_id = user.id;
+                    string stock_id = symbol;
+                    decimal priceDec = Decimal.Parse(price);
+                    int amount = Convert.ToInt32(stockAmount);
+                    createTransaction(user_id, stock_id,
+                    priceDec, amount, true);
+                    Response.Redirect("Index");
+                }
+            }
+        }
+        public ActionResult SellStock(string stock_id)
+        {
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                var lst = db.Transactions.ToList().Where(t => t.user_id == user.id).
+                    Where(t => t.stock_id == stock_id).
+                    Where(t => t.buy == true);
+                
+                return View(lst);
+            }
+            return Redirect("/Home/Index");
+        }
+        public ActionResult SellStock2(string stock_id, string amount)
+        {
+            
+            if (getNumberOwned(stock_id) > 0
+                && getNumberOwned(stock_id) >= Convert.ToInt32(amount))
+            {
+                
+                Transaction tr = new Transaction();
+                tr.stock_id = stock_id;
+                tr.amount = Convert.ToInt32(amount);
+                tr.datetime = DateTime.Now;
+                tr.price = Convert.ToDecimal(getStockPrice(stock_id));
+                dynamic user = fb.Get("me");
+                tr.user_id = user.id;
+                tr.buy = false;
+                db.Transactions.Add(tr);
+                db.SaveChanges();
+                return Redirect("Index");
+            }
+            return Redirect("Index");
+        }
         public ActionResult Details(int id = 0)
         {
             Transaction transaction = db.Transactions.Find(id);
@@ -141,7 +234,7 @@ namespace facebookProject.Controllers
             return success;
         }
         public void createTransaction(string user_id, string stock_id,
-            decimal price, int amount)
+            decimal price, int amount, bool buy)
         {
             DateTime datetime = DateTime.Now;
             Transaction tr = new Transaction();
@@ -150,8 +243,139 @@ namespace facebookProject.Controllers
             tr.price = price;
             tr.amount = amount;
             tr.datetime = datetime;
+            tr.buy = buy;
             db.Transactions.Add(tr);
             db.SaveChanges();
+        }
+        private Dictionary<string, string> getStockData(String ticker)
+        {
+            String url = "http://dev.markitondemand.com/Api/v2/Quote/xml?symbol=";
+            url += ticker;
+            String response = RequestResponse(url);
+            XDocument doc = XDocument.Parse(response);
+            Dictionary<string, string> dataDictionary = new Dictionary<string, string>();
+
+            foreach (XElement element in doc.Descendants().Where(p => p.HasElements == false))
+            {
+                int keyInt = 0;
+                string keyName = element.Name.LocalName;
+
+                while (dataDictionary.ContainsKey(keyName))
+                {
+                    keyName = element.Name.LocalName + "_" + keyInt++;
+                }
+
+                dataDictionary.Add(keyName, element.Value);
+            }
+            //string[] attributes = new string[]{"Status", "Name",
+            //"Symbol",
+            //"LastPrice",
+            //"Change" ,
+            //"ChangePercent",
+            //"Timestamp",
+            //"MSDate",
+            //"MarketCap",
+            //"Volume",
+            //"ChangeYTD",
+            //"ChangePercentYTD",
+            //"High",
+            //"Low",
+            //"Open"};
+            //foreach ( string attribute in attributes){
+
+            //}
+            ////XmlNode retrievedData = xmlDoc.SelectSingleNode(attribute);
+            ////String data = retrievedData.InnerText;
+
+            return dataDictionary;
+        }
+        public string getStockName(String stock_id)
+        {
+            var dict = getStockData(stock_id);
+            return dict["Name"];
+        }
+        public string getStockPrice(string stock_id)
+        {
+            var dict = getStockData(stock_id);
+            return dict["LastPrice"];
+        }
+        private string RequestResponse(string pUrl)
+        {
+            HttpWebRequest webRequest = System.Net.WebRequest.Create(pUrl) as HttpWebRequest;
+            webRequest.Method = "GET";
+            webRequest.ServicePoint.Expect100Continue = false;
+            webRequest.Timeout = 20000;
+
+            Stream responseStream = null;
+            StreamReader responseReader = null;
+            string responseData = "";
+            try
+            {
+                WebResponse webResponse = webRequest.GetResponse();
+                responseStream = webResponse.GetResponseStream();
+                responseReader = new StreamReader(responseStream);
+                responseData = responseReader.ReadToEnd();
+            }
+            catch (Exception exc)
+            {
+                Response.Write("<br /><br />ERROR : " + exc.Message);
+            }
+            finally
+            {
+                if (responseStream != null)
+                {
+                    responseStream.Close();
+                    responseReader.Close();
+                }
+            }
+
+            return responseData;
+        }
+        public int getNumberOwned( string stocksymbol)
+        {
+            if (isLoggedIn())
+            {
+                dynamic user = fb.Get("me");
+                string userID = user.id;
+                IEnumerable<Transaction> bought = db.Transactions.ToList().Where(t => t.user_id == userID && t.stock_id==stocksymbol && t.buy == true);
+                IEnumerable<Transaction> sold = db.Transactions.ToList().Where(t => t.user_id == userID && t.stock_id==stocksymbol && t.buy == false);
+                int boughtCount = 0;
+                int soldCount = 0;
+                foreach (Transaction t in bought)
+                {
+                    boughtCount += t.amount;
+                }
+                foreach (Transaction t in sold)
+                {
+                    soldCount += t.amount;
+                }
+                return boughtCount - soldCount;
+            }
+            return -1;
+            
+        }
+        public decimal getProfit(string stocksymbol)
+        {
+            if (isLoggedIn())
+            {
+
+                dynamic user = fb.Get("me");
+                string userID = user.id;
+                var bought = db.Transactions.ToList().Where(t => t.user_id == userID).Where(t => t.stock_id == stocksymbol).Where(t => t.buy == true);
+                var sold = db.Transactions.ToList().Where(t => t.user_id == userID).Where(t => t.stock_id == stocksymbol).Where(t => t.buy == false);
+                decimal spent = 0;
+                decimal gained = 0;
+                foreach (Transaction t in bought)
+                {
+                    spent += t.amount * t.price;
+                }
+                foreach (Transaction t in sold)
+                {
+                    gained += t.amount * t.price;
+                }
+                return gained - spent;
+            }
+            return -1;
         }
     }
 }

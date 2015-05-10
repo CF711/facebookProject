@@ -22,13 +22,14 @@ namespace facebookProject.Models
         public decimal price { get; set; }
         public DateTime datetime { get; set; }
         public int amount { get; set; }
+        public bool buy { get; set; }
     }
 
     [Table("Users")]
     public class User
     {
         [Key]
-        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         public string user_id { get; set; }
         public string fb_username { get; set; }
         public string first_name { get; set; }
@@ -39,7 +40,7 @@ namespace facebookProject.Models
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
-        public int event_id { get; set; }
+        public int id { get; set; }
         public string name { get; set; }
         public DateTime eventstart { get; set; }
         public DateTime eventend { get; set; }
