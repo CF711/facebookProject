@@ -70,6 +70,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PusherServer">
+      <HintPath>..\packages\PusherServer.2.1.0\lib\net35\PusherServer.dll</HintPath>
+    </Reference>
     <Reference Include="React">
       <HintPath>..\packages\React.Core.1.4.0\lib\net40\React.dll</HintPath>
     </Reference>
@@ -78,6 +81,13 @@
     </Reference>
     <Reference Include="React.Web.Mvc4">
       <HintPath>..\packages\React.Web.Mvc4.1.4.0\lib\net40\React.Web.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Spike.Runtime, Version=2.1.4975.16080, Culture=neutral, PublicKeyToken=bbbae3b375c299b6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>WebChat\Spike.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -256,6 +266,10 @@
     <Compile Include="Migrations\201505091456030_Added primary key generation for Event.Designer.cs">
       <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201505102107019_add_user_column_to_events.cs" />
+    <Compile Include="Migrations\201505102107019_add_user_column_to_events.Designer.cs">
+      <DependentUpon>201505102107019_add_user_column_to_events.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\EventManager.cs" />
@@ -331,6 +345,7 @@
     <Content Include="Scripts\custom\apiFacades\Status.js" />
     <Content Include="Scripts\custom\apiFacades\StockAPI.js" />
     <Content Include="Scripts\custom\initializers\stock.js" />
+    <Content Include="Scripts\custom\jquery-2.1.4.min.js" />
     <Content Include="Scripts\custom\modelComponents\virtualTrading\StockTransactionModel.js" />
     <None Include="Scripts\custom\viewComponents\virtualTrading\StockTransactionView.jsx" />
     <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
@@ -349,7 +364,6 @@
     <Content Include="Scripts\knockout-2.2.0.debug.js" />
     <Content Include="Scripts\knockout-2.2.0.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Views\Calendar\layout.css" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -391,9 +405,6 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Calendar\Index.cshtml" />
-    <Content Include="Views\Calendar\WeekView.cshtml" />
-    <Content Include="Views\Calendar\DayView.cshtml" />
-    <Content Include="Views\Calendar\MonthView.cshtml" />
     <Content Include="Views\Transactions\Index.cshtml" />
     <Content Include="Views\Transactions\Details.cshtml" />
     <Content Include="Views\Transactions\Create.cshtml" />
@@ -402,6 +413,7 @@
     <Content Include="Views\Transactions\BuySell.cshtml" />
     <Content Include="Views\Calendar\Create.cshtml" />
     <Content Include="Views\Calendar\Edit.cshtml" />
+    <Content Include="Views\Shared\_Blank.cshtml" />
     <Content Include="Views\Transactions\SellStock.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -428,6 +440,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201505091456030_Added primary key generation for Event.resx">
       <DependentUpon>201505091456030_Added primary key generation for Event.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201505102107019_add_user_column_to_events.resx">
+      <DependentUpon>201505102107019_add_user_column_to_events.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -47,6 +47,10 @@ namespace facebookProject.Models
         public string resource { get; set; }
         public bool allday { get; set; }
 
+        public string user_id { get; set; }
+        [ForeignKey("user_id")]
+
+        public virtual User event_user { get; set; }
     }
     [Table("Notes")]
     public class Note
@@ -58,18 +62,7 @@ namespace facebookProject.Models
         [ForeignKey("user_id")]
         public virtual User note_user { get; set; }
     }
-    [Table("Event_Users")]
-    public class Event_User
-    {
-        [Key]
-        public int id { get; set; }
-        public int event_id { get; set; }
-        [ForeignKey("event_id")]
-        public virtual Event calendar_event { get; set; }
-        public string user_id { get; set; }
-        [ForeignKey("user_id")]
-        public virtual User calendar_user { get; set; }
-    }
+
     public class NosebookContext : DbContext
     {
         public NosebookContext() : base("TransactionContext")
@@ -81,6 +74,5 @@ namespace facebookProject.Models
         public DbSet<User> Users { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Note> Notes { get; set; }
-        public DbSet<Event_User> Event_Users { get; set; }
     }
 }
