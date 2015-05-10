@@ -6,6 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using DayPilot.Web.Mvc.Json;
 using facebookProject.Models;
+using facebookProject.Controllers.Calendar;
 
 public class EventController : Controller
 {
@@ -15,13 +16,27 @@ public class EventController : Controller
         return View(e);
     }
 
+
     [System.Web.Mvc.AcceptVerbs(HttpVerbs.Post)]
-    public ActionResult Edit(FormCollection form)
+    public void Edit(FormCollection form)
     {
-        DateTime start = Convert.ToDateTime(form["Start"]);
-        DateTime end = Convert.ToDateTime(form["End"]);
-        new EventManager().EventEdit(form["Id"], form["Text"], start, end);
-        return JavaScript(SimpleJsonSerializer.Serialize("OK"));
+        if (form["command"] == "edit")
+        {
+            String name = form["name"];
+            DateTime start = Convert.ToDateTime(form["Start"]);
+            DateTime end = Convert.ToDateTime(form["End"]);
+            new EventManager().EventEdit(form["Id"], name, start, end);
+        }
+        else if (form["command"] == "delete")
+        {
+            new EventManager().EventDelete(form["Id"]);
+        }
+        
+    }
+
+    public void Delete(String id)
+    {
+        new EventManager().EventDelete(id);
     }
 
 

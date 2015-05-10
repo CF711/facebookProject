@@ -52,7 +52,8 @@ namespace facebookProject.Models
 
         public void EventEdit(string id, string name, DateTime start, DateTime end)
         {
-            Event eventToUpdate = db.Events.Where(p => p.id == int.Parse(id)).SingleOrDefault<Event>();
+            int idInt = int.Parse(id);
+            Event eventToUpdate = db.Events.Where(p => p.id == idInt).SingleOrDefault<Event>();
             eventToUpdate.eventstart = start;
             eventToUpdate.eventend = end;
             eventToUpdate.name = name;
@@ -71,7 +72,8 @@ namespace facebookProject.Models
 
         public Event Get(string id)
         {
-            Event eventToGet = db.Events.Where(p => p.id == int.Parse(id)).SingleOrDefault<Event>();
+            int idInt = int.Parse(id);
+            Event eventToGet = db.Events.Where(p => p.id == idInt).SingleOrDefault<Event>();
             return eventToGet;
         }
 
@@ -88,7 +90,8 @@ namespace facebookProject.Models
 
         public void EventDelete(string id)
         {
-            Event eventToDelete = db.Events.Where(p => p.id == int.Parse(id)).SingleOrDefault<Event>();
+            int idInt = int.Parse(id);
+            Event eventToDelete = db.Events.Where(p => p.id == idInt).SingleOrDefault<Event>();
             db.Events.Remove(eventToDelete);
             db.SaveChanges();
         }
