@@ -345,6 +345,7 @@
     <Content Include="Scripts\custom\apiFacades\Status.js" />
     <Content Include="Scripts\custom\apiFacades\StockAPI.js" />
     <Content Include="Scripts\custom\initializers\stock.js" />
+    <Content Include="Scripts\custom\jquery-2.1.4.min.js" />
     <Content Include="Scripts\custom\modelComponents\virtualTrading\StockTransactionModel.js" />
     <None Include="Scripts\custom\viewComponents\virtualTrading\StockTransactionView.jsx" />
     <Content Include="Scripts\DayPilot\daypilot-all.min.js" />
