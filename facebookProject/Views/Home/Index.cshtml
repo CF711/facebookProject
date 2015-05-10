@@ -6,6 +6,8 @@
 
 @section scripts {
     @Scripts.Render("~/bundles/custom")
+    @Scripts.Render("~/")
+    @Styles.Render("~/Content/Table.css")
 }
 
 @section featured {
@@ -69,9 +71,8 @@
 
     </script>
     <div class="col-md-4" id="left-panel">
-        <div id="stock">
-            Stock
-        </div>
+        
+            
         <div id="user_stock">
         </div>
         <div id="transactions">
@@ -80,13 +81,65 @@
         <div id="calendar">
             <a href="/Calendar/Index">View Calendar</a>
         </div>
+        @*Web Chat*@
+        <div class="chat">
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
+            <script src="http://js.pusher.com/2.2/pusher.min.js"></script>
+            <div id="wrapper">
+                
+                <div id="upperPanel">
+                    <div>
+                        <table id="messages">
+                        </table>
+                    </div>
+                    <div id="friends">
+
+                    </div>
+                </div>
+                @*@using (Html.BeginForm("PostChat","Home",FormMethod.Post,null))
+                {*@
+                <div id="bottomPanel">
+                    <textarea rows="2" cols="50" id="chatMessage"></textarea>
+                    @*@Html.TextArea("chatMessage")*@
+                    <input id="chatSubmitMessage" type="submit" value="Send" style="margin-left: 10px;" /><br />
+                </div>
+                @*}*@
+            </div>​​​​​​​​​​​​​
+            @*<article>
+                <form>
+                    <input type="text" id="chatMessage" placeholder="Enter your message here." />
+                </form>
+                <ul id="messages"></ul>
+            </article>*@
+
+            <script type="text/javascript">
+                $(function () {
+                    var pusher = new Pusher('46b5305b3dc414716219');
+                    var channel = pusher.subscribe('test_channel');
+                    channel.bind('message_received', function (data) {
+                        $("#messages").append('<tr> <th>' + data.user + '</th><th> ' + data.message + '</th><th> ' + data.timestamp + '</th>');
+                    });
+
+                    $('#chatSubmitMessage').click( function () {
+                        $.post("/Home/PostChat", {
+                            chatMessage: $('#chatMessage').val()
+                        });
+                    });
+                });
+            </script>
+
+        </div>
     </div>
     <div class="col-md-8" id="right-panel">
-        <div id="facebook">
-            
+        <div id="facebook">  
         </div>
         <div id="newsfeed">News Feed</div>
     </div>
 </section>
+
+
+
+
+
 
 

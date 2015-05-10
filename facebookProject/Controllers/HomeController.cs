@@ -9,12 +9,42 @@ using System.Xml;
 using Facebook;
 using facebookProject.Models;
 using System.Xml.Linq;
+using PusherServer;
+using System.Configuration;
 namespace facebookProject.Controllers
 {
     public class HomeController : Controller
     {
+        
         private NosebookContext db = new NosebookContext();
-        public ActionResult Index()
+        private static readonly Pusher provider = new Pusher
+        (
+           ConfigurationManager.AppSettings["pusher_app_id"],
+           ConfigurationManager.AppSettings["pusher_key"],
+           ConfigurationManager.AppSettings["pusher_secret"]
+        );
+
+        public void PostChat( string chatMessage )
+        {
+            var accessToken = Session["AccessToken"].ToString();
+            FacebookClient fb = new FacebookClient(accessToken);
+            dynamic user = fb.Get("me");
+            if (!String.IsNullOrEmpty(chatMessage))
+            {
+                //Chat Part
+                var now = DateTime.UtcNow;
+
+                var result = provider.Trigger("test_channel", "message_received", new
+                {
+                    message = chatMessage,
+                    user = user.first_name,
+                    timestamp = now.ToShortDateString() + " " + now.ToShortTimeString()
+                });
+                //End Chat
+            }
+                
+        }
+        public ActionResult Index(string chatMessage)
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             //string data =  getStockData("name", "a");
@@ -25,7 +55,8 @@ namespace facebookProject.Controllers
                 FacebookClient fb = new FacebookClient(accessToken);
                 dynamic user = fb.Get("me");
                 //Get list of stocks
-                db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime);
+                
+                //db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime);
             }
             return View();
         }
