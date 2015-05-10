@@ -1,44 +1,61 @@
-﻿@{
-    Layout = null;
-}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-   	<script type="text/javascript" src="@Url.Content("~/Scripts/jquery-1.8.2.min.js")"></script>
-    <link href="@Url.Content("~/Media/layout.css")" rel="stylesheet" type="text/css" />
-   	<style>
-   	p, body, td { font-family: Tahoma, Arial, Sans-Serif; font-size: 10pt; }
-   	</style>
-    <title></title>
-</head>
-<body style="padding:10px">
-    <form id="f" method="post" action="@Url.Action("Edit")">
-    <h2>Edit Event</h2>
+﻿@{ Layout = "~/Views/Shared/_Blank.cshtml"; }
 
-    <div style="margin-top:20px">
-        <div>Event text</div>
-        @Html.TextBox("Text") @Html.Hidden("Id")
-    </div>
+<body class="padded">
+    
+   
+    @using (Html.BeginForm("Edit","Event",FormMethod.Post))
+    {
+        <h2>Edit Event</h2>
 
-    <div>Start</div>
-    <div>@Html.TextBox("Start")</div>
+        <div id="fields" style="margin-top:20px">
+            <div>Event text</div>
+            @Html.TextBox("Text")
+            @Html.Hidden("Id", Request.QueryString["Id"])
+            @Html.Hidden("Start", Request.QueryString["Start"])
+            @Html.Hidden("End", Request.QueryString["End"])
+        </div>
 
-    <div>End</div>
-    <div>@Html.TextBox("End")</div>
+        <div style="margin-top:20px">
+            <input type="submit" value="Save" onclick="editClicked();" />
+            <a href="javascript:close()">Cancel</a>
+            <input type="submit" value="Delete" onclick="deleteClicked();" />
+        </div>
+        <script type="text/javascript">
+
+            function formClose() {
+                parent.DayPilot.ModalStatic.close();
+            }
+            function editClicked() {
+                
+                var name = document.getElementById("Text").value;
+                var field = document.getElementById("fields");
+                field.innerHTML += '@Html.Hidden("command", "edit")'
+                field.innerHTML += '<input id="name" name="name" type="hidden" value="'+name+'"/>'
+                formClose();
+                parent.location.reload();
+            }
+            function deleteClicked() {
+                var field = document.getElementById("fields");
+                field.innerHTML += '@Html.Hidden("command", "delete")'
+                formClose();
+                parent.location.reload();
+            }
+
+</script>
+
+    }
     
-    <div style="margin-top:20px">
-        <input type="submit" value="Save" />
-        <a href="javascript:close()">Cancel</a>
-    </div>
-    
-    </form>
-    
+
     <script type="text/javascript">
+
+        
+
         function close(result) {
             if (parent && parent.DayPilot && parent.DayPilot.ModalStatic) {
                 parent.DayPilot.ModalStatic.close(result);
             }
         }
+        
 
         $("#f").submit(function () {
             var f = $("#f");
@@ -51,8 +68,8 @@
         $(document).ready(function () {
             $("#Text").focus();
         });
-    
+
     </script>
-    
+
 </body>
-</html>
+
