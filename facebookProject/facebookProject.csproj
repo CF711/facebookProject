@@ -70,6 +70,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Newtonsoft.Json.5.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PusherServer">
+      <HintPath>..\packages\PusherServer.2.1.0\lib\net35\PusherServer.dll</HintPath>
+    </Reference>
     <Reference Include="React">
       <HintPath>..\packages\React.Core.1.4.0\lib\net40\React.dll</HintPath>
     </Reference>
@@ -78,6 +81,13 @@
     </Reference>
     <Reference Include="React.Web.Mvc4">
       <HintPath>..\packages\React.Web.Mvc4.1.4.0\lib\net40\React.Web.Mvc4.dll</HintPath>
+    </Reference>
+    <Reference Include="RestSharp">
+      <HintPath>..\packages\RestSharp.105.0.1\lib\net4\RestSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Spike.Runtime, Version=2.1.4975.16080, Culture=neutral, PublicKeyToken=bbbae3b375c299b6, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>WebChat\Spike.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
