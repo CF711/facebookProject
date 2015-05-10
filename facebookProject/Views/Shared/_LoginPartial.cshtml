@@ -10,17 +10,18 @@
 else
 {
     <script src="~/Scripts/custom/apiFacades/FacebookAPI.js"></script>
+    
 
     <!--
       Below we include the Login Button social plugin. This button uses
       the JavaScript SDK to present a graphical Login button that triggers
       the FB.login() function when clicked.
     -->
-
+ 
     <div id="status">
     </div>
     <ul class="nav navbar-nav navbar-right"  >
-        <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" autologoutlink="true">
-        </fb:login-button>
+        <div class="fb-login-button" data-show-faces="true" data-width="400" data-max-rows="1" onlogin="checkLoginState();" autologoutlink="true">
+        </div>
     </ul>
 }

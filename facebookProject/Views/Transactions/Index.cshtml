@@ -3,55 +3,78 @@
 @{
     ViewBag.Title = "Index";
 }
-
+@Styles.Render("~/Content/Table.css")
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Buy or Sell Stock", "BuySell")
 </p>
-<table>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.user_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.stock_id)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.price)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.datetime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.amount)
-        </th>
-        <th></th>
-    </tr>
+<div class="CSSTableGenerator">
+    <table>
+        <tr>
+            <th>
+                Transaction Type
+            </th>
+            <th>
+                Stock Name
+            </th>
+            <th>
+                Transaction Price
+            </th>
+            <th>
+                Date of Transaction
+            </th>
+            <th>
+                <p>Quantity Bought</p>
+                <p>Or</p>
+                <p>Sold</p>
+            </th>
+            <th>
+                <p>Sell Stock</p>
+                <p>Profit Made</p>
+            </th>
+        </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.user_id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.stock_id)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.price)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.datetime)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.amount)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.transaction_id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.transaction_id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.transaction_id })
-        </td>
-    </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (item.buy == true)
+                    {
+                        @Html.Label("Purchase")
+                    }
+                    else
+                    {
+                        @Html.Label("Sale")
+                    }
+                </td>
+                <td>
+                    @Html.Action("getStockName", "Transactions", new { stock_id = item.stock_id });
+                </td>
+                <td>
+                    $@Html.DisplayFor(modelItem => item.price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.datetime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.amount)
+                </td>
+                <td>
+                    <div id="sellstock">
+                        @if (item.buy == true) { 
+                            using (Html.BeginForm("SellStock", "Transactions")){
+                            @Html.Hidden("stock_id", item.stock_id)
+                            <input type="submit" value="Sell" />
+                            }
+                        }
+                        else{
+                           @Html.Action("getProfit", "Transactions", new { stocksymbol = item.stock_id })
+                        }
+                    </div>
+                </td>
+            </tr>
+        }
 
-</table>
+    </table>
+</div>
