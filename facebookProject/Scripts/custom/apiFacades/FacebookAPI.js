@@ -85,66 +85,161 @@ function init() {
     }
 
     function publishToFacebook(body) {
-        //ev.preventDefault();
         FB.api('/me/feed', 'post', { message: body }, function (response) {
 
         });
         return false;
     }
 
-    function addStatus() {
+    function publishToFacebookWithPicture(body,link) {
+        FB.api('/me/feed', 'post',
+            { message: body },
+            { picture: link },
+            function (response) {
 
+        });
+        return false;
+    }
+
+    function addStatus() {
+        var start = document.getElementById("facebook");
+        var div = document.createElement("div");
+        var statusDiv = document.createElement("div");
+        var pictureDiv = document.createElement("div");
+        div.setAttribute('id', 'statusUpdate');
         var t = document.createElement("label");
+        var updateStatusL = document.createTextNode("Update Status: ");
+        t.appendChild(updateStatusL);
 
         t.setAttribute('value', "Test");
+        
         t.value = "Update Status"
+        t.setAttribute('class', 'updateLabel');
 
+        var span = document.createElement("span");
+        span.setAttribute('class', 'mySpan');
         var i = document.createElement("input"); //input element, text
         i.setAttribute('type', "text");
         i.setAttribute('name', "username");
+        i.setAttribute('class', 'input');
+        span.appendChild(i);
+        var pLinkLabel = document.createElement("label");
+
+        pLinkLabel.setAttribute('value', "pLinkLabel");
+        pLinkLabel.value = "Upload Picture";
+        var uploadPictureL = document.createTextNode("Upload Picture: ");
+        pLinkLabel.appendChild(uploadPictureL);
+        pLinkLabel.setAttribute('class', 'updateLabel');
+
+        var pSpan = document.createElement("span");
+        pSpan.setAttribute('class', 'mySpan');
+
+        var pictureLink = document.createElement("input");
+        pictureLink.setAttribute('type', 'text');
+        pictureLink.setAttribute('name', 'pictureLink');
+        pictureLink.setAttribute('class', 'input');
+        pSpan.appendChild(pictureLink);
+
         var s = document.createElement("input"); //input element, Submit button
         s.setAttribute('type', "submit");
         s.setAttribute('value', "Publish");
+        
         s.addEventListener('click', function () {
-            publishToFacebook(i.value);
+            var pLink = pictureLink.value;
+            var message = i.value;
+            if (pLink != "") {
+                if (validUrl(pLink)) {
+                    publishToFacebookWithPicture(message, pLink);
+                    getMe(function (me) {
+                        addNewsItem(me,true, function (div2) {
+                            console.log("Adding Picture");
+                            addPicture(pLink, div2);
+                        });
+                    });
+                } else {
+                    alert("Invalid Picture URL");
+                }
+            } else {
+                publishToFacebook(message);
+                getMe(function (me) {
+                    addNewsItem(me,true, function (newsItem) {
+                        addMessage(message, newsItem)
+                    });
+                });
+            }
             i.value = "";
+            pictureLink.value = "";
+            FB.ui({
+                method: 'send',
+                link: 'http://thenosebook.tk',
+            });
+
         }, true);
 
-        document.getElementById("facebook").appendChild(t);
-        document.getElementById("facebook").appendChild(i);
-        document.getElementById("facebook").appendChild(s);
+        statusDiv.appendChild(t);
+        statusDiv.appendChild(span);
+        pictureDiv.appendChild(pLinkLabel);
+        pictureDiv.appendChild(pSpan);
+        div.appendChild(statusDiv);
+        div.appendChild(pictureDiv);
+        div.appendChild(s);
 
-
+        start.appendChild(div);
     }
 
     function getNewsFeed() {
         /* make the API call */
         FB.api(
-            "/me/feed",
-            { fields: 'story,message,from,type' },
-            //{sence:""}
-            //{filter: 'other'},
+            "/me/home",
+            { fields: 'story,message,from,type,link' },
+            {sence:'last week'},
+            //{ filter: 'nf' },
+            {limit:2},
             //fields:story,message,from
             //filter: other
             function (response) {
                 console.log(response);
                 if (response && !response.error) {
-                    //var status = new Status(response.to, response.from, response.message);
-                    console.log(response);
-                    for (var i = 0; i < response['data'].length; i++) {
-                        var obj = response['data'][i];
-                        if (obj.from != undefined) {
-                            addNewsItem(obj.from, obj.message);
-                        }
-                        else if (obj.message != undefined) {
-                            addStatusFeed(obj.message);
-                        }
-
-                    }
-
+                    displayStatus(response, 0, function () { });
                 }
             }
         );
+    }
+
+    function displayStatus(response, i, callback) {
+        //console.log(response);
+        var obj = response['data'][i];
+        if (obj == undefined) {
+            return;
+        }
+        if (obj.type == "link") {
+            addNewsItem(obj.from,false, function (div) {
+                addPicture(obj.link,div);
+            });
+
+        } else if (obj.type == "status") {
+            addNewsItem(obj.from,false, function (newsItem) {
+                addMessage(obj.message,newsItem)
+            });
+        }
+        else if (obj.message != undefined) {
+            addStatusFeed(obj.message);
+        }
+        if (response['data'][i+1] != undefined) {
+            displayStatus(response, i+1, callback);
+        } else {//if (response.paging.cursors.after) {
+            
+            $.getJSON(response.paging.next, function (response) {
+                if (response.length != 0) {
+                    displayStatus(response, 0, callback);
+                }
+            });
+            //console.log(FB.api("/me/home/",nextPage));
+            //var params = jQuery.deparam.querystring(nextPage);
+            //console.log(JSON.stringify(params, null, 2));
+            //FB.api('/me/home', params, displayStatus(response,0,function(){}));
+            //displayStatus(response.paging.next, 0, callback);
+        }
     }
 
     function getUser(userID, retn) {
@@ -160,63 +255,119 @@ function init() {
     }
 
     function addStatusFeed(message) {
-        var fromBreak = document.createElement("BR");
-        var fromLabel = document.createElement("FROM");
-        var fromUserLabel = document.createTextNode("Me");
+        var fromLabel = document.createElement("lebel");
+        var fromUserLabel = document.createTextNode("lebel");
         var from = document.createTextNode("From: ");
         fromLabel.appendChild(from);
         fromLabel.appendChild(fromUserLabel);
 
-        var messBreak = document.createElement("BR");
-        var messLabel = document.createElement("MESSAGE");
+        var messLabel = document.createElement("label");
         var mess = document.createTextNode("Message: ");
         var messageLabel = document.createTextNode(message);
         messLabel.appendChild(mess);
         messLabel.appendChild(messageLabel);
 
-        var endBreak = document.createElement("BR");
-
-        document.getElementById("newsfeed").appendChild(fromBreak);
         document.getElementById("newsfeed").appendChild(fromLabel);
-        document.getElementById("newsfeed").appendChild(messBreak);
         document.getElementById("newsfeed").appendChild(messLabel);
-        document.getElementById("newsfeed").appendChild(endBreak);
     }
 
-    function addNewsItem(user, message) {
-        var endBreak = document.createElement("BR");
-        var fromBreak = document.createElement("BR");
-        var fromLabel = document.createElement("FROM");
+    function addNewsItem(user,order, callback) {
+        var status = document.createElement("div");
+        status.setAttribute("id", "newsItem");
+        var fromLabel = document.createElement("label");
 
         var imgUrl = "";
         getUser(user.id, function (url) {
-            var startBreak = document.createElement("BR");
+            var img = document.createElement("img");
+            img.src = url;
+            img.setAttribute("id", "fbProfilePic");
+
+            status.appendChild(img);
+
+            var fromUserLabel = document.createTextNode(user.name);
+            fromLabel.appendChild(fromUserLabel);
+            fromLabel.setAttribute("id", "name");
+                  
+            status.appendChild(fromLabel);
+            var doc = document.getElementById("newsfeed");
+            console.log(doc.childNodes);
+            if (doc.childNodes[0] == undefined || !order) {
+                doc.appendChild(status);
+            } else {
+                doc.insertBefore(status, doc.childNodes[1]);
+            }
+            //document.getElementById("newsfeed").appendChild(status);
+            console.log("just appended child to newsfeed.")
+            callback(status);
+        });  
+
+    }
+
+    function addMessage(textmessage,message) {
+        var messLabel = document.createElement("label");
+        messLabel.setAttribute("id", "messageTitle");
+        var messTextLabel = document.createElement("label");
+        var mess = document.createTextNode("Message: ");
+        var messageLabel = document.createTextNode(textmessage);
+        messTextLabel.setAttribute('id', 'message');
+        messLabel.appendChild(mess);
+        messTextLabel.appendChild(messageLabel);
+        message.appendChild(messLabel);
+        message.appendChild(messTextLabel);
+        //document.getElementById("newsfeed").appendChild(message);
+    }
+
+    function addPicture(picture,div) {
+        var start = document.getElementById("newsfeed");
+
+        var pictureLabel = document.createElement("pLabel");
+        var pLabel = document.createTextNode("Picture: ");
+        pictureLabel.appendChild(pLabel);
+        
+
+        var pic = document.createElement("img");
+        pic.setAttribute("src", picture);
+        pic.setAttribute("id", "fbImage");
+
+        div.appendChild(pictureLabel);
+        div.appendChild(pic);
+        //start.appendChild(div);
+
+    }
+
+    function addComment(post, i) {
+        var comment = document.createElement("div");
+        var fromLabel = document.createElement("label");
+
+
+        var imgUrl = "";
+        getUser(user.id, function (url) {
             var img = document.createElement("img");
             img.src = url;
 
-            document.getElementById("newsfeed").appendChild(startBreak);
-            document.getElementById("newsfeed").appendChild(img);
+            comment.appendChild(img);
 
             var fromUserLabel = document.createTextNode(user.name);
             fromLabel.appendChild(fromUserLabel);
 
-            var messBreak = document.createElement("BR");
-            var messLabel = document.createElement("MESSAGE");
-            var mess = document.createTextNode("Message: ");
-            var messageLabel = document.createTextNode(message);
-            messLabel.appendChild(mess);
-            messLabel.appendChild(messageLabel);
-
-            document.getElementById("newsfeed").appendChild(fromBreak);
-            document.getElementById("newsfeed").appendChild(fromLabel);
-            document.getElementById("newsfeed").appendChild(messBreak);
-            document.getElementById("newsfeed").appendChild(messLabel);
-            document.getElementById("newsfeed").appendChild(endBreak);
+            comment.appendChild(fromLabel);
+          //  document.getElementById("newsfeed").appendChild(comment);
+            callback();
         });
-        
-        
-        
+    }
 
+    function validUrl(str) {
+        var pattern = new RegExp('^(https?:\\/\\/)?' + // protocol
+        '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+        '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+        '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+        '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+        '(\\#[-a-z\\d_]*)?$', 'i'); // fragment locator
+        if (!pattern.test(str)) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
 
