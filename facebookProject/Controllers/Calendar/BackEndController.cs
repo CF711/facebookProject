@@ -19,7 +19,22 @@ namespace facebookProject.Controllers.Calendar
         //
         // GET: /BackEnd/
 
-        FacebookClient fb = null; 
+        FacebookClient fb = null;
+        private bool isLoggedIn()
+        {
+            var accessToken = Request.Cookies["jumbleUP"].Value;
+            if (accessToken != null)
+            {
+
+                //var accessToken = Session["AccessToken"].ToString();
+                fb = new FacebookClient(accessToken);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
 
         public BackEndController()
         {
@@ -28,13 +43,13 @@ namespace facebookProject.Controllers.Calendar
         }
         public ActionResult Month()
         {
-            if (Session["AccessToken"] == null)
+            if (!isLoggedIn())
             {
                 return Redirect("/Home/Index");
             }
             else
             {
-                var accessToken = Session["AccessToken"].ToString();
+                var accessToken = Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 return new Dpm(fb).CallBack(this);
             }
@@ -42,13 +57,13 @@ namespace facebookProject.Controllers.Calendar
 
         public ActionResult Week()
         {
-            if (Session["AccessToken"] == null)
+            if (!isLoggedIn())
             {
                 return Redirect("/Home/Index");
             }
             else
             {
-                var accessToken = Session["AccessToken"].ToString();
+                var accessToken = Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 Dpc dpc = new Dpc(fb);
                 dpc.HeaderDateFormat = new DateTime().ToString("dddd");
@@ -59,13 +74,13 @@ namespace facebookProject.Controllers.Calendar
 
         public ActionResult Day()
         {
-            if (Session["AccessToken"] == null)
+            if (!isLoggedIn())
             {
                 return Redirect("/Home/Index");
             }
             else
             {
-                var accessToken = Session["AccessToken"].ToString();
+                var accessToken = Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 Dpc dpc = new Dpc(fb);
                 dpc.HeaderDateFormat = new DateTime().ToString("dddd");

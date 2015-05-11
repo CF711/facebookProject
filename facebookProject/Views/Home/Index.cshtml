@@ -33,7 +33,7 @@
         //});
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '457596417728680',
+                appId: '398794130283284',
                 status: true,
                 xfbml: true,
                 cookie: true,
@@ -48,9 +48,9 @@
                     // and signed request each expire
                     var uid = response.authResponse.userID;
                     var accessToken = response.authResponse.accessToken;
-                    //alert("here");
+                    alert("here");
                     var accessToken = response.authResponse.accessToken;
-                    $.post('@Url.Action("UserInfo", "Home")', { 'accessToken': accessToken });
+                    document.cookie = "jumbleUp=" + accessToken;
                 } else if (response.status === 'not_authorized') {
                     // the user is logged in to Facebook, 
                     // but has not authenticated your app

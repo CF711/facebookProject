@@ -20,12 +20,12 @@ namespace facebookProject.Controllers
         FacebookClient fb;
 
         //
-        private bool isLoggedIn()
+        private bool isLoggedIn(string accessToken)
         {
-            if (Session["AccessToken"] != null)
+            if (accessToken != null)
             {
 
-                var accessToken = Session["AccessToken"].ToString();
+                //var accessToken = Session["AccessToken"].ToString();
                 fb = new FacebookClient(accessToken);
                 return true;
             }
@@ -37,7 +37,9 @@ namespace facebookProject.Controllers
         // GET: /Transactions/
         public ActionResult Index()
         {
-            if (isLoggedIn())
+
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
                 dynamic user = fb.Get("me");
                 return View(db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime));
@@ -46,8 +48,8 @@ namespace facebookProject.Controllers
         }
         public ActionResult BuySell(string searchString)
         {
-
-            if (isLoggedIn())
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
                 if (!String.IsNullOrEmpty(searchString))
                 {
@@ -68,7 +70,8 @@ namespace facebookProject.Controllers
         
         public void BuyStock( string stockAmount, string symbol, string price)
         {
-            if (isLoggedIn())
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
                 if (!String.IsNullOrEmpty(stockAmount))
                 {
@@ -85,7 +88,8 @@ namespace facebookProject.Controllers
         }
         public ActionResult SellStock(string stock_id)
         {
-            if (isLoggedIn())
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
                 dynamic user = fb.Get("me");
                 var lst = db.Transactions.ToList().Where(t => t.user_id == user.id).
@@ -333,7 +337,8 @@ namespace facebookProject.Controllers
         }
         public int getNumberOwned( string stocksymbol)
         {
-            if (isLoggedIn())
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
                 dynamic user = fb.Get("me");
                 string userID = user.id;
@@ -356,7 +361,8 @@ namespace facebookProject.Controllers
         }
         public decimal getProfit(string stocksymbol)
         {
-            if (isLoggedIn())
+            var token = Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token))
             {
 
                 dynamic user = fb.Get("me");
