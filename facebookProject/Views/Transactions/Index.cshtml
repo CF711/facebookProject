@@ -64,15 +64,16 @@
                 </td>
                 <td>
                     <div id="sellstock">
-                        @if (item.buy == true) { 
-                            using (Html.BeginForm("SellStock", "Transactions")){
-                            @Html.Hidden("stock_id", item.stock_id)
-                            <input type="submit" value="Sell" />
+                        @*@if (item.buy == true) {*@ 
+                            @using (Html.BeginForm("SellStock", "Transactions",FormMethod.Post)){
+                                @Html.Hidden("stock_id", item.stock_id)
+                                @Html.Hidden("token", HttpContext.Current.Request.Cookies["jumbleUP"].Value)
+                                <input type="submit" value="Sell" />
                             }
-                        }
+                        @*}
                         else{
                            @Html.Action("getProfit", "Transactions", new { stocksymbol = item.stock_id })
-                        }
+                        }*@
                     </div>
                 </td>
             </tr>

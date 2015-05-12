@@ -22,8 +22,16 @@ namespace facebookProject.Controllers.Calendar
         FacebookClient fb = null;
         private bool isLoggedIn()
         {
-            var accessToken = Request.Cookies["jumbleUP"].Value;
-            if (accessToken != null)
+            var accessToken = "";
+            try
+            {
+                accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
+            }
+            catch (NullReferenceException e)
+            {
+                accessToken = "";
+            }
+            if (!String.IsNullOrEmpty(accessToken))
             {
 
                 //var accessToken = Session["AccessToken"].ToString();
@@ -35,6 +43,7 @@ namespace facebookProject.Controllers.Calendar
                 return false;
             }
         }
+
 
         public BackEndController()
         {
@@ -49,7 +58,7 @@ namespace facebookProject.Controllers.Calendar
             }
             else
             {
-                var accessToken = Request.Cookies["jumbleUP"].Value;
+                var accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 return new Dpm(fb).CallBack(this);
             }
@@ -63,7 +72,7 @@ namespace facebookProject.Controllers.Calendar
             }
             else
             {
-                var accessToken = Request.Cookies["jumbleUP"].Value;
+                var accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 Dpc dpc = new Dpc(fb);
                 dpc.HeaderDateFormat = new DateTime().ToString("dddd");
@@ -80,7 +89,7 @@ namespace facebookProject.Controllers.Calendar
             }
             else
             {
-                var accessToken = Request.Cookies["jumbleUP"].Value;
+                var accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
                 fb = new FacebookClient(accessToken);
                 Dpc dpc = new Dpc(fb);
                 dpc.HeaderDateFormat = new DateTime().ToString("dddd");

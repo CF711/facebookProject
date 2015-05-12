@@ -26,7 +26,7 @@ namespace facebookProject.Controllers
 
         public void PostChat( string chatMessage )
         {
-            var accessToken = Session["AccessToken"].ToString();
+            var accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
             FacebookClient fb = new FacebookClient(accessToken);
             dynamic user = fb.Get("me");
             if (!String.IsNullOrEmpty(chatMessage))
@@ -48,15 +48,23 @@ namespace facebookProject.Controllers
         {
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
             //string data =  getStockData("name", "a");
-            if (Session["AccessToken"] != null)
+            try
             {
 
-                var accessToken = Session["AccessToken"].ToString();
+                var accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
                 FacebookClient fb = new FacebookClient(accessToken);
                 dynamic user = fb.Get("me");
                 //Get list of stocks
-                
+
                 //db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.StackTrace);
+            }
+            finally
+            {
+                
             }
             return View();
         }
@@ -75,12 +83,12 @@ namespace facebookProject.Controllers
             return View();
         }
 
-        public void UserInfo(string accessToken)
+        public void UserInfo()
         {
-            var client = new FacebookClient(accessToken);
+            throw new Exception("AAA");
+            var client = new FacebookClient( HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value);
             dynamic result = client.Get("me");     
             createUser(result.id, result.first_name, result.last_name, result.email);
-            Session["AccessToken"] = accessToken;
         }
 
         

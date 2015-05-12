@@ -18,37 +18,65 @@ namespace facebookProject.Controllers
     {
         private NosebookContext db = new NosebookContext();
         FacebookClient fb;
-
         //
         private bool isLoggedIn(string accessToken)
         {
-            if (accessToken != null)
+            if (!String.IsNullOrEmpty(accessToken))
             {
-
                 //var accessToken = Session["AccessToken"].ToString();
                 fb = new FacebookClient(accessToken);
-                return true;
+                dynamic user = fb.Get("me");
+                var created = createUser(user.id, user.first_name, user.last_name, user.email);
+                return (created != null);
             }
             else
             {
                 return false;
             }
         }
+
+
+        public User createUser(string id, string first_name, string last_name,
+            string email)
+        {
+            User user = new User();
+            user.user_id = id;
+            user.first_name = first_name;
+            user.last_name = last_name;
+            user.fb_username = email;
+            if (db.Users.ToList().Where(p => p.user_id == id).Count() == 0)
+            {
+                db.Users.Add(user);
+                db.SaveChanges();
+                return user;
+            }
+            else
+            {
+                return db.Users.Find(id);
+            }
+        }
         // GET: /Transactions/
         public ActionResult Index()
         {
-
-            var token = Request.Cookies["jumbleUP"].Value;
-            if (isLoggedIn(token))
-            {
-                dynamic user = fb.Get("me");
-                return View(db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime));
+            var accessToken = "";
+            try{
+            accessToken = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
             }
-            return Redirect("/Home/Index");
+            catch( NullReferenceException e){
+                accessToken = "";
+            }
+                if (isLoggedIn(accessToken))
+                {
+
+                    dynamic user = fb.Get("me");
+                    return View(db.Transactions.ToList().Where(tr => tr.user_id == user.id).OrderBy(tr => tr.datetime));
+                }
+                return Redirect("/Home/Index");
+            
         }
         public ActionResult BuySell(string searchString)
         {
-            var token = Request.Cookies["jumbleUP"].Value;
+            var token = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
             if (isLoggedIn(token))
             {
                 if (!String.IsNullOrEmpty(searchString))
@@ -70,8 +98,8 @@ namespace facebookProject.Controllers
         
         public void BuyStock( string stockAmount, string symbol, string price)
         {
-            var token = Request.Cookies["jumbleUP"].Value;
-            if (isLoggedIn(token))
+            var token = HttpContext.ApplicationInstance.Request.Cookies["jumbleUP"].Value;
+            if (isLoggedIn(token) && !String.IsNullOrEmpty(symbol))
             {
                 if (!String.IsNullOrEmpty(stockAmount))
                 {
@@ -86,9 +114,9 @@ namespace facebookProject.Controllers
                 }
             }
         }
-        public ActionResult SellStock(string stock_id)
+        public ActionResult SellStock(string stock_id, string token)
         {
-            var token = Request.Cookies["jumbleUP"].Value;
+            
             if (isLoggedIn(token))
             {
                 dynamic user = fb.Get("me");

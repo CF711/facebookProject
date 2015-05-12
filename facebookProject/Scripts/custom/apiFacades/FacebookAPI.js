@@ -10,6 +10,9 @@ function init() {
         // for FB.getLoginStatus().
         if (response.status === 'connected') {
             //getMe();
+
+            var accessToken = response.authResponse.accessToken;
+            document.cookie = "jumbleUP=" + accessToken;
             addStatus();
 
             getNewsFeed();
@@ -23,6 +26,8 @@ function init() {
             // The person is not logged into Facebook, so we're not sure if
             // they are logged into this app or not.
             FB.login(function (response) {
+                var accessToken = response.authResponse.accessToken;
+                document.cookie = "jumbleUP=" + accessToken;
                 addStatus();
 
                 getNewsFeed();
